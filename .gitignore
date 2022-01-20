@@ -1,0 +1,8 @@
+#Ignore node modules
+node_modules/
+
+#ignore all the models
+models/
+
+# Ignore the personal documents
+to-do.txt
