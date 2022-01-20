@@ -1,0 +1,20 @@
+header#header-contents
+    div.col-9.runner-left.title-text
+        a(href="/")
+            i(class="fas fa-gamepad icon-link" style="padding-right: 15px;") 
+        span  Sorting Alg Game -  #{pageTitle} 
+            if algLvl
+                span Level #{algLvl}
+
+    //- div.col-3.runner-center= pageTitle
+        
+
+    div.col-3.runner-right
+        a(class='link-text' href='/')
+            button 
+                i.fas.fa-home
+        div.line-seperator
+        a(class='link-text' href='/info/about') About
+        div.line-seperator
+        a(class='link-text' href='/admin') Admin
+
