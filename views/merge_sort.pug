@@ -3,6 +3,11 @@ extends index.pug
 block content 
     //-- needs to change to accomadate lvl 5
     div#gameboard(style="width: 100%; display: flex; flex-direction: column")
+        div.arr-holder
+            div.arr-row
+                button.btn.start-btn(onclick="getRandArr()")= "Start"
+                    
+
         div.arr-holder 
             div.arr-row
                 button.btn.btn-secondary(onclick="collerClick()")
@@ -10,13 +15,5 @@ block content
                 button.btn.btn-secondary(onclick="getNextRow()")
                     i.fas.fa-arrow-right
 
-        div.arr-holder#master-hold
-            div.arr-row#master-row
-                each val, index in algArray
-                    if index == 0
-                        button.arr.arr-start(exp-val=val)= val
-                    else if index == algArray.length - 1
-                        button.arr.arr-end(exp-val=val)= val
-                    else
-                        button.arr(exp-val=val)= val
+        
 

@@ -1,124 +1,123 @@
 @import "runners.css";
 
-:root{
-    /*----- Heights -----*/
-    --header-l-height: 80px;
-    --footer-l-height: 50px;
+:root {
+  /*----- Heights -----*/
+  --header-l-height: 80px;
+  --footer-l-height: 50px;
 
-    /*-- transition times for elements neeeding same time */
-    --theme-trans-time: 0.8s;
-    /*----- Colors -----*/
-    /*-- colors with t prefix are same but transparent */
-    /*-- c- colors are followed by what they contrast */
-    /*-- colors prefixed with v stand for very*/
-    
-    /* blues */
-    --dark-blue:#000050;
-    --med-blue: #8a8aff;
-    --c-dark-blue: rgb(255,250,240); /* Very light orange */
+  /*-- transition times for elements neeeding same time */
+  --theme-trans-time: 0.8s;
+  /*----- Colors -----*/
+  /*-- colors with t prefix are same but transparent */
+  /*-- c- colors are followed by what they contrast */
+  /*-- colors prefixed with v stand for very*/
 
-    /* greens */
-    --v-light-green: rgb(150, 235, 150);
-    --t-v-light-green: rgb(150, 235, 150, 40%);
-    --light-green: rgb(95, 165,95);
-    --med-green: rgb(75,145,75);
-    --dark-green: rgb(55, 125, 55);
+  /* blues */
+  --dark-blue: #000050;
+  --med-blue: #8a8aff;
+  --c-dark-blue: rgb(255, 250, 240); /* Very light orange */
 
-    /* purples */
-    --med-purple: rgb(140,75,190);
-    --dark-purple: rgb(40,0,70);
-    --v-dark-purple: rgb(10, 0, 20);
-    --c-dark-purple: white;/*rgb(245, 235, 235); /* Very light pink */
+  /* greens */
+  --v-light-green: rgb(150, 235, 150);
+  --t-v-light-green: rgb(150, 235, 150, 40%);
+  --light-green: rgb(95, 165, 95);
+  --med-green: rgb(75, 145, 75);
+  --dark-green: rgb(55, 125, 55);
 
+  /* purples */
+  --med-purple: rgb(140, 75, 190);
+  --dark-purple: rgb(40, 0, 70);
+  --v-dark-purple: rgb(10, 0, 20);
+  --c-dark-purple: white; /*rgb(245, 235, 235); /* Very light pink */
 }
 
-
-body{
-    min-height: 100vh;
+body {
+  min-height: 100vh;
 }
 
 /*----- Default Page CSS -----*/
-.default-page{
-    width: 100%;
-    min-height: calc(100vh - var(--header-l-height) - var(--footer-l-height)); /* change later to calc height - footer - header*/
-    display: flex;
+.default-page {
+  width: 100%;
+  min-height: calc(
+    100vh - var(--header-l-height) - var(--footer-l-height)
+  ); /* change later to calc height - footer - header*/
+  display: flex;
 
-    /*newly added */
-    padding: 1rem;
-    margin-bottom: var(--footer-l-height); /* Accounts for footer */
-    transition: background-color var(--theme-trans-time) ease;
+  /*newly added */
+  padding: 1rem;
+  margin-bottom: var(--footer-l-height); /* Accounts for footer */
+  transition: background-color var(--theme-trans-time) ease;
 }
 
 /*----- Buttons -----*/
-.btn-round{
-    font-size: 100%;
+.btn-round {
+  font-size: 100%;
 
-    height: 35px;
-    width: 35px;
+  height: 35px;
+  width: 35px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    border-radius: 50%;
+  border-radius: 50%;
 }
 
 /* non game pages*/
 .select-menu {
-    width: 100%; 
-    display: flex; 
-    flex-direction: column; 
-    justify-content: space-around; 
-    align-items:center; 
-    
-    height: inherit;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  height: inherit;
 }
 
 .lvl-sel-row {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 /* Array atyling */
 .arr {
-    height: 45px;
-    width: 45px;
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
-    border-right: 1px solid black;
-    border-left: 1px solid black;
+  height: 45px;
+  width: 45px;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
 }
 .arr-start {
-    border-top-left-radius: 25%;
-    border-bottom-left-radius: 25%;
-    border-left: 2px solid black !important
+  border-top-left-radius: 25%;
+  border-bottom-left-radius: 25%;
+  border-left: 2px solid black !important;
 }
 .arr-single {
-    border: 2px solid black;
-    border-radius: 25%;
+  border: 2px solid black;
+  border-radius: 25%;
 }
 .arr-end {
-    border-top-right-radius: 25%;
-    border-bottom-right-radius: 25%;
-    border-right: 2px solid black !important
-
+  border-top-right-radius: 25%;
+  border-bottom-right-radius: 25%;
+  border-right: 2px solid black !important;
 }
 
 /* Array holders*/
 
 .arr-row {
-    display: flex; 
-    flex-direction: row; 
-    justify-content: center; 
-    align-items: center
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .arr-holder {
-    width:100%; 
-    display: flex; 
-    flex-direction: row; 
-    justify-content: space-evenly; 
-    align-items: start
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: start;
 }
