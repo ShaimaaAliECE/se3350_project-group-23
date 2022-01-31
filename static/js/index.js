@@ -1,88 +1,91 @@
 class BinaryTreeNode {
-  constructor(key, value = key, parent = null) {
-    this.key = key;
-    this.value = value;
-    this.parent = parent;
-    this.left = null;
-    this.right = null;
-  }
+    constructor(key, value = key, parent = null) {
+        this.key = key;
+        this.value = value;
+        this.parent = parent;
+        this.left = null;
+        this.right = null;
+    }
 
-  get isLeaf() {
-    return this.left === null && this.right === null;
-  }
+    get isLeaf() {
+        return this.left === null && this.right === null;
+    }
 
-  get hasChildren() {
-    return !this.isLeaf;
-  }
+    get hasChildren() {
+        return !this.isLeaf;
+    }
 }
 
 class BinaryTree {
-  constructor(key, value = key) {
-    this.root = new BinaryTreeNode(key, value);
-  }
+    constructor(key, value = key) {
+        this.root = new BinaryTreeNode(key, value);
+    }
 
-  *inOrderTraversal(node = this.root) {
-    if (node.left) yield* this.inOrderTraversal(node.left);
-    yield node;
-    if (node.right) yield* this.inOrderTraversal(node.right);
-  }
+    *inOrderTraversal(node = this.root) {
+        if (node.left) yield* this.inOrderTraversal(node.left);
+        yield node;
+        if (node.right) yield* this.inOrderTraversal(node.right);
+    }
 
-  *postOrderTraversal(node = this.root) {
-    if (node.left) yield* this.postOrderTraversal(node.left);
-    if (node.right) yield* this.postOrderTraversal(node.right);
-    yield node;
-  }
+    *postOrderTraversal(node = this.root) {
+        if (node.left) yield* this.postOrderTraversal(node.left);
+        if (node.right) yield* this.postOrderTraversal(node.right);
+        yield node;
+    }
 
-  *preOrderTraversal(node = this.root) {
-    yield node;
-    if (node.left) yield* this.preOrderTraversal(node.left);
-    if (node.right) yield* this.preOrderTraversal(node.right);
-  }
+    *preOrderTraversal(node = this.root) {
+        yield node;
+        if (node.left) yield* this.preOrderTraversal(node.left);
+        if (node.right) yield* this.preOrderTraversal(node.right);
+    }
 
-  insert(
-    parentNodeKey,
-    key,
-    value = key,
-    { left, right } = { left: true, right: true }
-  ) {
-    for (let node of this.preOrderTraversal()) {
-      if (node.key === parentNodeKey) {
-        const canInsertLeft = left && node.left === null;
-        const canInsertRight = right && node.right === null;
-        if (!canInsertLeft && !canInsertRight) return false;
-        if (canInsertLeft) {
-          node.left = new BinaryTreeNode(key, value, node);
-          return true;
+    insert(
+        parentNodeKey,
+        key,
+        value = key,
+        { left, right } = { left: true, right: true }
+    ) {
+        for (let node of this.preOrderTraversal()) {
+            if (node.key === parentNodeKey) {
+                const canInsertLeft = left && node.left === null;
+                const canInsertRight = right && node.right === null;
+
+                if (!canInsertLeft && !canInsertRight) return false;
+
+                if (canInsertLeft) {
+                    node.left = new BinaryTreeNode(key, value, node);
+                    return true;
+                }
+
+                if (canInsertRight) {
+                    node.right = new BinaryTreeNode(key, value, node);
+                    return true;
+                }
+            }
         }
-        if (canInsertRight) {
-          node.right = new BinaryTreeNode(key, value, node);
-          return true;
+        return false;
+    }
+
+    remove(key) {
+        for (let node of this.preOrderTraversal()) {
+            if (node.left.key === key) {
+                node.left = null;
+                return true;
+            }
+            if (node.right.key === key) {
+                node.right = null;
+                return true;
+            }
         }
-      }
+        return false;
     }
-    return false;
-  }
 
-  remove(key) {
-    for (let node of this.preOrderTraversal()) {
-      if (node.left.key === key) {
-        node.left = null;
-        return true;
-      }
-      if (node.right.key === key) {
-        node.right = null;
-        return true;
-      }
+    find(key) {
+        for (let node of this.preOrderTraversal()) {
+            if (node.key === key) return node;
+        }
+        return undefined;
     }
-    return false;
-  }
-
-  find(key) {
-    for (let node of this.preOrderTraversal()) {
-      if (node.key === key) return node;
-    }
-    return undefined;
-  }
 }
 
 //-------------------------------------------------------------------
@@ -158,63 +161,59 @@ function sort() {
     // Creates tree for the merging steps
     mergeTree = new BinaryTree(0, mergedArrs.pop());
 
-    // Merge sort algorithm
-    function mergeSort(arr, parentKey = 0, depth = 0) {
-      // Gets the length of half the array (rounding up)
-      const half = Math.ceil(arr.length / 2);
-
-      // Base case
-      if (arr.length < 2) return arr;
-
-      // Left side of the array, right side will be stored in "arr" since splice removes these values from original arr
-      const left = arr.splice(0, half);
-
-      // Sets the key for the left side of the array, and inserts it into the tree
-      const leftKey = (depth + 1).toString() + keys[depth].length;
-      splitTree.insert(parentKey, leftKey, [...left]);
-
-      let curKey = keys[depth].length;
-      keys[depth].push(curKey);
-
-      // Sets the key for the right side of the array, and inserts it into the tree
-      const rightKey = (depth + 1).toString() + keys[depth].length;
-      splitTree.insert(parentKey, rightKey, [...arr]);
-
-      curKey = keys[depth].length;
-      keys[depth].push(curKey);
-
-      return merge(
-        mergeSort(left, leftKey, depth + 1),
-        mergeSort(arr, rightKey, depth + 1),
-        depth
-      );
-    }
-
-    // Merge two arrays
-    function merge(left, right, depth) {
-      let arr = [];
-
-      // Break if any of the arrays are empty
-      while (left.length && right.length) {
-        // Pushes the lowest of the two values (first value from each array)
-        if (left[0] < right[0]) arr.push(left.shift());
-        else arr.push(right.shift());
-      }
-
-      let merged = [...arr, ...left, ...right];
-      console.log("Depth: " + depth + " Arr: " + merged);
-      mergedArrs.push([[...merged], depth]);
-
-      // Concatenating leftover elements
-      return merged;
-    }
+   
   }
 }
+// Merge sort algorithm
+function mergeSort(arr, parentKey = 0, depth = 0) {
+  // Gets the length of half the array (rounding up)
+  const half = Math.ceil(arr.length / 2);
 
-function collerClick() {
-  console.log(window.location.pathname);
-  $("#cooler").append("<div>Dig it</div>");
+  // Base case
+  if (arr.length < 2) return arr;
+
+  // Left side of the array, right side will be stored in "arr" since splice removes these values from original arr
+  const left = arr.splice(0, half);
+
+  // Sets the key for the left side of the array, and inserts it into the tree
+  const leftKey = (depth + 1).toString() + keys[depth].length;
+  splitTree.insert(parentKey, leftKey, [...left]);
+
+  let curKey = keys[depth].length;
+  keys[depth].push(curKey);
+
+  // Sets the key for the right side of the array, and inserts it into the tree
+  const rightKey = (depth + 1).toString() + keys[depth].length;
+  splitTree.insert(parentKey, rightKey, [...arr]);
+
+  curKey = keys[depth].length;
+  keys[depth].push(curKey);
+
+  return merge(
+    mergeSort(left, leftKey, depth + 1),
+    mergeSort(arr, rightKey, depth + 1),
+    depth
+  );
 }
+// Merge two arrays
+function merge(left, right, depth) {
+  let arr = [];
+
+  // Break if any of the arrays are empty
+  while (left.length && right.length) {
+    // Pushes the lowest of the two values (first value from each array)
+    if (left[0] < right[0]) arr.push(left.shift());
+    else arr.push(right.shift());
+  }
+
+  let merged = [...arr, ...left, ...right];
+  console.log("Depth: " + depth + " Arr: " + merged);
+  mergedArrs.push([[...merged], depth]);
+
+  // Concatenating leftover elements
+  return merged;
+}
+//--------
 
 // dont need to sdn stuff as post due to cookies
 function getNextRow() {
