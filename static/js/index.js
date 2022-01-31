@@ -101,6 +101,7 @@ let curStep = 0;
 let numRows;
 
 function getRandArr() {
+  //used after start btn once
   $(".start-btn").remove();
 
   let data = {};
@@ -123,17 +124,7 @@ function sort() {
     let maxDepth = Math.ceil(Math.log(origArr.length) / Math.log(2));
 
     // Populating the initial array on the screen
-    let markup = `<div class="arr-holder" id="master-hold">
-    <div class="arr-row" id="master-row">`;
-
-    origArr.forEach((val, i) => {
-      if (i === 0) markup += `<button class="arr arr-start">${val}</button>`;
-      else if (i === origArr.length - 1)
-        markup += `<button class="arr arr-end">${val}</button>`;
-      else markup += `<button class="arr">${val}</button>`;
-    });
-
-    markup += `</div></div>`;
+    let markup = `<div class="arr-holder" id="master-hold">` + formatRow(origArr) + `</div>`;
 
     // Number of arr-holder rows is twice max depth because need rows for both splitting and merging
     numRows = maxDepth * 2;
@@ -160,8 +151,6 @@ function sort() {
 
     // Creates tree for the merging steps
     mergeTree = new BinaryTree(0, mergedArrs.pop());
-
-   
   }
 }
 // Merge sort algorithm
@@ -213,20 +202,14 @@ function merge(left, right, depth) {
   // Concatenating leftover elements
   return merged;
 }
-//--------
 
 // dont need to sdn stuff as post due to cookies
 function getNextRow() {
+  // Increment current step
   curStep++;
 
-  // Will need a row div whether we are splitting or merging
-  let markup = `<div class="arr-row">`;
-
   // If merging
-  if (
-    curStep >= splitOrder.length &&
-    curStep < splitOrder.length + mergedArrs.length
-  ) {
+  if (curStep >= splitOrder.length && curStep < splitOrder.length + mergedArrs.length) {
     // The "merge step" is just the current step minus the steps needed for splitting
     let curMergeStep = curStep - splitOrder.length;
 
@@ -234,118 +217,41 @@ function getNextRow() {
     let curStepArr = mergedArrs[curMergeStep][0];
     let curStepDepth = mergedArrs[curMergeStep][1];
 
-    // For each number in the array, create a button
-    for (n of curStepArr) {
-      markup += `<button class="arr arr-single" exp-val=${n}>${n}</button>`;
-    }
-
     // Appends markup to the correct arr-holder
-    $(`#arr-holder-${numRows - curStepDepth}`).append(markup);
-
-    // Return, so we don't go into the splitting section of this fn
-    return;
-  } // If this is the last merge step, put the final result of the merge into the last arr-holder
-  else if (curStep === splitOrder.length + mergedArrs.length) {
-    for (n of mergeResult) {
-      markup += `<button class="arr arr-single" exp-val=${n}>${n}</button>`;
-    }
-
-    $(`#arr-holder-${numRows}`).append(markup);
-
-    // Return, so we don't go into the splitting section of this fn
-    return;
+    $(`#arr-holder-${numRows - curStepDepth}`).append(formatRow(curStepArr));
+  } else if (curStep === splitOrder.length + mergedArrs.length) {
+    // If this is the last merge step, put the final result of the merge into the last arr-holder
+    $(`#arr-holder-${numRows}`).append(formatRow(mergeResult));
   } else if (curStep >= splitOrder.length) {
     console.log("Error. Algorithm complete, no more steps");
-    // Return, so we don't go into the splitting section of this fn
-    return;
+  } else {
+    let curStepKey = splitTree.find(splitOrder[curStep]).key;
+    let curStepArr = splitTree.find(splitOrder[curStep]).value;
+
+    // Add the current array of numbers to the row
+    $(`#arr-holder-${curStepKey.slice(0, 1)}`).append(formatRow(curStepArr));//merkup);
   }
-
-  // Splitting section
-  // -----------------
-
-  let curStepKey = splitTree.find(splitOrder[curStep]).key;
-  let curStepArr = splitTree.find(splitOrder[curStep]).value;
-
-  // For each number in the current step, add a button to represent it
-  for (n of curStepArr) {
-    markup += `<button class="arr arr-single" exp-val=${n}>${n}</button>`;
-  }
-
-  markup += `</div>`;
-
-  // Add the current array of numbers to the row
-  $(`#arr-holder-${curStepKey.slice(0, 1)}`).append(markup);
 }
 
-// function displayNewRow() {
-//   if (this.readyState == 4 && this.status == 200) {
-//     let rowArrs = JSON.parse(this.responseText).arr;
-//     let rowWidth = 200 / rowArrs.length; //need to change to better
+// Formats the displayed rows accordingly (move from index but put in game index) 
+function formatRow(arr) {
+  let n;
+  let html = `<div class="arr-row">`;
 
-//     new Promise((resolve, reject) => {
-//       let html = '<div class="arr-holder">';
-//       for (let i = 0; i < rowArrs.length; i++) {
-//         html += '<div class="arr-row" style="width:' + rowWidth + '%;">';
+  if (arr.length == 1) {
+    html += `<button class="arr arr-single" exp-val=${arr[0]}>${arr[0]}</button>`;
+  } else {
+    for(var i = 0; i < arr.length; i++) {
+      n = arr[i];
+      if(i == 0) {
+        html += `<button class="arr arr-start" exp-val=${n}>${n}</button>`;
+      } else if (i + 1 == arr.length) {
+        html += `<button class="arr arr-end" exp-val=${n}>${n}</button>`;
+      } else {
+        html += `<button class="arr" exp-val=${n}>${n}</button>`;
+      }
+    }
+  }
 
-//         let temp = rowArrs[i];
-
-//         for (let j = 0; j < temp.length; j++) {
-//           if (j == 0) {
-//             if (temp.length == 1) {
-//               html +=
-//                 '<button class="arr arr-single" exp-val="' +
-//                 temp[j] +
-//                 '">' +
-//                 temp[j] +
-//                 "</button>";
-//             } else {
-//               html +=
-//                 '<button class="arr arr-start" exp-val="' +
-//                 temp[j] +
-//                 '">' +
-//                 temp[j] +
-//                 "</button>";
-//             }
-//           } else if (j == temp.length - 1) {
-//             html +=
-//               '<button class="arr arr-end" exp-val="' +
-//               temp[j] +
-//               '">' +
-//               temp[j] +
-//               "</button>";
-//           } else {
-//             html +=
-//               '<button class="arr" exp-val="' +
-//               temp[j] +
-//               '">' +
-//               temp[j] +
-//               "</button>";
-//           }
-//         }
-
-//         html += "</div>";
-
-//         if (i + 1 == rowArrs.length) {
-//           resolve(html + "</div>");
-//         }
-//       }
-//     }).then((newRow) => {
-//       $("#gameboard").append(newRow);
-//     });
-//   }
-// }
-/* 
-function formatRow(items) {
-    div.arr-holder
-            div.arr-row
-                each val, index in algArray
-                    if index == 0
-                        button.arr.arr-start(exp-val=val)= val
-                    else if index == algArray.length - 1
-                        button.arr.arr-end(exp-val=val)= val
-                    else
-                        button.arr(exp-val=val)= val
-    return new Promise((resolve, reject) => {
-        for(let i = 0; i < items.length)
-    });
-} */
+  return html + `</div>`;
+}
