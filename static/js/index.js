@@ -262,6 +262,32 @@ function getNextRow() {
 
   $(`#arr-row-${curNode.key}-a`).html(formatRow(val));
 }
+function getPrevRow() {
+  let curNode, val;
+
+  if(curStep == 0) {
+    return;
+  }
+
+  if (curStep >= splitOrder.length && curStep < splitOrder.length + mergeOrder.length) {
+    curNode = splitTree.find(mergeOrder[curStep - mergeOrder.length]);
+    val = formatRow(curNode.value);
+
+    if(curNode.value.length <= 1) {
+      curStep--;
+      return getPrevRow();
+    }
+  } else if (curStep < splitOrder.length) {
+    curNode = splitTree.find(splitOrder[curStep]);
+    val = "";
+  } else {
+    console.log("Error. Algorithm complete, no more steps");
+    return;
+  }
+
+  $(`#arr-row-${curNode.key}-a`).html(val);
+  curStep--;
+}
 
 // Formats the displayed rows accordingly (move from index but put in game index) 
 function formatRow(arr) {
@@ -269,16 +295,16 @@ function formatRow(arr) {
   let html = ``;
 
   if (arr.length == 1) {
-    html += `<button class="arr arr-single" exp-val=${arr[0]}>${arr[0]}</button>`;
+    html += `<div class="arr arr-single" exp-val=${arr[0]}>${arr[0]}</div>`;
   } else {
     for(var i = 0; i < arr.length; i++) {
       n = arr[i];
       if(i == 0) {
-        html += `<button class="arr arr-start" exp-val=${n}>${n}</button>`;
+        html += `<div class="arr arr-start" exp-val=${n}>${n}</div>`;
       } else if (i + 1 == arr.length) {
-        html += `<button class="arr arr-end" exp-val=${n}>${n}</button>`;
+        html += `<div class="arr arr-end" exp-val=${n}>${n}</div>`;
       } else {
-        html += `<button class="arr" exp-val=${n}>${n}</button>`;
+        html += `<div class="arr" exp-val=${n}>${n}</div>`;
       }
     }
   }

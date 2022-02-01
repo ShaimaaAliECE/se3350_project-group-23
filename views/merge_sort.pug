@@ -5,7 +5,7 @@ block content
     div#gameboard(style="width: 100%; display: flex; flex-direction: column")
         div.arr-holder(style="order: -2") 
             div.arr-row
-                button.btn.btn-secondary
+                button.btn.btn-secondary(onclick="getPrevRow()")
                     i.fas.fa-arrow-left 
                 button.btn.btn-secondary(onclick="getNextRow()")
                     i.fas.fa-arrow-right
