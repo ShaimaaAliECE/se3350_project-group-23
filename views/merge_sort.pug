@@ -3,17 +3,13 @@ extends index.pug
 block content 
     //-- needs to change to accomadate lvl 5
     div#gameboard(style="width: 100%; display: flex; flex-direction: column")
-        div.arr-holder
+        div.arr-holder(style="order: -2") 
             div.arr-row
-                button.btn.start-btn(onclick="getRandArr()")= "Start"
-                    
-
-        div.arr-holder 
-            div.arr-row
-                button.btn.btn-secondary(onclick="collerClick()")
+                button.btn.btn-secondary#prev-btn(onclick="getPrevRow()")
                     i.fas.fa-arrow-left 
-                button.btn.btn-secondary(onclick="getNextRow()")
+                button.btn.btn-secondary#next-btn(onclick="getNextRow()")
                     i.fas.fa-arrow-right
 
-        
-
+        div.arr-holder(style="order: -1") 
+            div.arr-row
+                button.btn.start-btn(onclick="getRandArr()")= "Start"
