@@ -93,13 +93,14 @@ class BinaryTree {
 let keys = [];
 let splitOrder = [];
 let splitTree;
-//let mergeOrder = [];
+let mergeOrder = [];
 let mergedArrs = [];
 let mergeTree;
 let mergeResult;
 let curStep = 0;
 let numRows;
 let maxDepth;
+const boxSize = 45; // size of a single box within a display array (px)
 
 function getRandArr() {
   //used after start btn once
@@ -119,24 +120,56 @@ function getRandArr() {
 function sort() {
   if (this.readyState == 4 && this.status == 200) {
     let origArr = JSON.parse(this.responseText).arr; // Gets the original array of random numbers
+    let rowSize = origArr.length * boxSize;
     maxDepth = Math.ceil(Math.log(origArr.length) / Math.log(2)); // Finds the max depth of the tree
     let markup = `<div class="arr-holder" id="master-hold"><div class="arr-row" id="master-row">` + formatRow(origArr) + `</div></div>`; // Populating the initial array on the screen
 
     numRows = maxDepth * 2; // Number of arr-holder rows is twice max depth because need rows for both splitting and merging
 
-    for (i = 1; i < maxDepth + 1; i++) {
+    for (i = 1; i < maxDepth * 2 + 1; i++) {
       keys.push([]);
-      
-      markup += `<div class="arr-holder" id="arr-holder-${i}-a">`;
 
-      for (j = 0; j < Math.pow(2,i); j++) {
-        markup += `<div class="arr-row" id="arr-row-${i}${j}-a"></div>`;
+      if (i < maxDepth) {      
+        rowSize = Math.ceil(origArr.length/(i * 2)) * boxSize;
+        markup += `<div class="arr-holder" id="arr-holder-${i}-a">`;
+
+        for (j = 0; j < Math.pow(2,i); j++) {
+          markup += `<div class="arr-row" id="arr-row-${i}${j}-a" style="width: ${rowSize}px"></div>`;
+        }
+
+        markup += `</div>`;
+      } else if (i > maxDepth) {
+        markup += `<div class="arr-holder" id="arr-holder-${i - maxDepth}-b">`;
+
+        for (j = 0; j < Math.pow(2,(i - maxDepth)); j++) {
+          markup += `<div class="arr-row" id="arr-row-${i - maxDepth}${j}-b"></div>`;
+        }
+
+        markup += `</div>`;
+      } else {
+        // clean up later
+        rowSize = Math.ceil(origArr.length/(i * 2)) * boxSize;
+        markup += `<div class="arr-holder" id="arr-holder-${maxDepth}-a">`;
+
+        markup += `<div class="arr-row" id="arr-row-${maxDepth}0-a" style="width: ${rowSize}px"></div>`;
+        markup += `<div class="arr-row" id="arr-row-${maxDepth}1-a" style="width: ${rowSize}px"></div>`;
+
+        for (j = 2; j < Math.pow(2,(i - 1)); j++) {
+          markup += `<div class="arr-row" style="width: ${rowSize}px"></div>`;
+        }
+        markup += `<div class="arr-row" id="arr-row-${maxDepth}2-a" style="width: ${rowSize}px"></div>`;
+        markup += `<div class="arr-row" id="arr-row-${maxDepth}3-a" style="width: ${rowSize}px"></div>`;
+
+        for (j = 2; j < Math.pow(2,(i - 1)); j++) {
+          markup += `<div class="arr-row" style="width: ${rowSize}px"></div>`;
+        }
+        markup += `</div>`;
+        rowSize = Math.ceil(origArr.length/( (maxDepth * 2 - i) * 2)) * boxSize;
+        console.log(rowSize);
       }
-
-      markup += `</div>`;
     }
 
-    for (i = 1; i < maxDepth + 1; i++) {
+    /* for (i = 1; i < maxDepth + 1; i++) {
       keys.push([]);
       
       markup += `<div class="arr-holder" id="arr-holder-${i}-b">`;
@@ -146,7 +179,7 @@ function sort() {
       }
 
       markup += `</div>`;
-    }
+    } */
 
     $("#gameboard").append(markup); // Append markup to the end of the gameboard
 
@@ -155,9 +188,10 @@ function sort() {
 
     // Creates tree for the splitting steps
     splitTree = new BinaryTree(0, [...origArr]);
+    console.log(splitTree);
 
     // Gets the final merged result
-    mergeResult = mergeSort([...origArr]);
+    mergeResult = mergeSort(splitTree, [...origArr], 0,0);
 
     // Order of steps
     splitOrder = [...splitTree.preOrderTraversal()].map((n) => n.key);
@@ -165,15 +199,18 @@ function sort() {
 
     // Creates tree for the merging steps
     mergeTree = new BinaryTree(0, [...origArr.sort()]);//mergedArrs.pop());
-    console.log(mergeTree)
+    // Gets the final merged result
+    mergeSort(mergeTree, [...origArr], 0, 0);
 
 
     // Creates tree for the merging steps
     mergeOrder = [...mergeTree.preOrderTraversal()].map((n) => n.key);
+
+    console.log(mergeTree)
   }
 }
 // Merge sort algorithm
-function mergeSort(arr, parentKey = 0, depth = 0) {
+function mergeSort(tree, arr, parentKey, depth) {
   // Gets the length of half the array (rounding up)
   const half = Math.ceil(arr.length / 2);
 
@@ -181,26 +218,25 @@ function mergeSort(arr, parentKey = 0, depth = 0) {
   if (arr.length < 2) return arr;
 
   // Left side of the array, right side will be stored in "arr" since splice removes these values from original arr
-  console.log(parentKey, arr);
   const left = arr.splice(0, half);
 
   // Sets the key for the left side of the array, and inserts it into the tree
   const leftKey = (depth + 1).toString() + keys[depth].length;
-  splitTree.insert(parentKey, leftKey, [...left]);
+  tree.insert(parentKey, leftKey, [...left]);
 
   let curKey = keys[depth].length;
   keys[depth].push(curKey);
 
   // Sets the key for the right side of the array, and inserts it into the tree
   const rightKey = (depth + 1).toString() + keys[depth].length;
-  splitTree.insert(parentKey, rightKey, [...arr]);
+  tree.insert(parentKey, rightKey, [...arr]);
 
   curKey = keys[depth].length;
   keys[depth].push(curKey);
 
   return merge(
-    mergeSort(left, leftKey, depth + 1),
-    mergeSort(arr, rightKey, depth + 1),
+    mergeSort(tree, left, leftKey, depth + 1),
+    mergeSort(tree, arr, rightKey, depth + 1),
     depth
   );
 }
@@ -241,9 +277,9 @@ function getNextRow() {
     // Appends markup to the correct arr-holder
     //$(`#arr-holder-${numRows - curStepDepth}`).append(formatRow(curStepArr));
     console.log(mergeTree);
-
-    let curStepKey = mergeTree.find(splitOrder[curStep - splitOrder.length]).key;
-    let curStepArr = mergeTree.find(splitOrder[curStep - splitOrder.length]).value;
+    console.log(mergeOrder[curStep - mergeOrder.length]);
+    let curStepKey = mergeTree.find(mergeOrder[curStep - mergeOrder.length]).key;
+    let curStepArr = mergeTree.find(mergeOrder[curStep - mergeOrder.length]).value;
 
     // Add the current array of numbers to the row
     console.log(curStepKey);
