@@ -127,3 +127,10 @@ body {
     border-right: 2px solid black !important
 
 }
+.num-slot {
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}

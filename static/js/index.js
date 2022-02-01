@@ -146,7 +146,7 @@ function sorter() {
 function fillGameBoard(startArray, maxDepth) {
   let rowSize = startArray.length * boxSize;
 
-  let dom = `<div class="arr-holder" id="dom-hold" style="order: 0"><div class="arr-row" id="arr-row-0-a">` + formatRow(startArray) + `</div></div>`;
+  let dom = `<div class="arr-holder" id="dom-hold" style="order: 0"><div class="arr-row" id="arr-row-0-a">` + formatRow(startArray, '0') + `</div></div>`;
   let sub = `<div class="arr-holder" id="sub-hold" style="order: ${maxDepth * 3}"><div class="arr-row" id="arr-row-0-b"></div></div>`;
   let split = ``;
   let sort = ``;
@@ -260,7 +260,8 @@ function getNextRow() {
     return;
   }
 
-  $(`#arr-row-${curNode.key}-a`).html(formatRow(val));
+  $(`#arr-row-${curNode.key}-a`).html(formatRow(val,curNode.key));
+  $('#next-btn').blur();
 }
 function getPrevRow() {
   let curNode, val;
@@ -271,7 +272,7 @@ function getPrevRow() {
 
   if (curStep >= splitOrder.length && curStep < splitOrder.length + mergeOrder.length) {
     curNode = splitTree.find(mergeOrder[curStep - mergeOrder.length]);
-    val = formatRow(curNode.value);
+    val = formatRow(curNode.value, curNode.key);
 
     if(curNode.value.length <= 1) {
       curStep--;
@@ -287,24 +288,25 @@ function getPrevRow() {
 
   $(`#arr-row-${curNode.key}-a`).html(val);
   curStep--;
+  $('#prev-btn').blur();
 }
 
 // Formats the displayed rows accordingly (move from index but put in game index) 
-function formatRow(arr) {
+function formatRow(arr, key) {
   let n;
   let html = ``;
 
   if (arr.length == 1) {
-    html += `<div class="arr arr-single" exp-val=${arr[0]}>${arr[0]}</div>`;
+    html += `<div class="arr arr-single" id="arr-box-${key}-${0}"exp-val=${arr[0]}><div class="num-slot">${arr[0]}</div></div>`;
   } else {
     for(var i = 0; i < arr.length; i++) {
       n = arr[i];
       if(i == 0) {
-        html += `<div class="arr arr-start" exp-val=${n}>${n}</div>`;
+        html += `<div class="arr arr-start" id="arr-box-${key}-${i}"exp-val=${n}><div class="num-slot">${n}</div></div>`;
       } else if (i + 1 == arr.length) {
-        html += `<div class="arr arr-end" exp-val=${n}>${n}</div>`;
+        html += `<div class="arr arr-end" id="arr-box-${key}-${i}" exp-val=${n}><div class="num-slot">${n}</div></div>`;
       } else {
-        html += `<div class="arr" exp-val=${n}>${n}</div>`;
+        html += `<div class="arr" id="arr-box-${key}-${i}" exp-val=${n}><div class="num-slot">${n}</div></div>`;
       }
     }
   }
