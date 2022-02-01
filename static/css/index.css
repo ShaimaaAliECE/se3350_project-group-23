@@ -108,6 +108,7 @@ body {
 /* Array holders*/
 
 .arr-row {
+  height: 45px;
   display: flex;
   flex-direction: row;
   justify-content: center;
