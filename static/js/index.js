@@ -46,13 +46,7 @@ class BinaryTree {
         if (node.left) yield* this.preOrderTraversal(node.left);
         if (node.right) yield* this.preOrderTraversal(node.right);
     }
-
-    *reversePreOrderTraversal(node = this.root) {
-      yield node;
-      if (node.right) yield* this.reversePreOrderTraversal(node.right);
-      if (node.left) yield* this.reversePreOrderTraversal(node.left);
-  }
-
+    
     insert(
         parentNodeKey,
         key,
@@ -143,7 +137,7 @@ function sorter() {
     splitOrder = [...splitTree.preOrderTraversal()].map((n) => n.key);
     
     // Creates tree for the merging steps
-    mergeOrder = [...splitTree.reversePreOrderTraversal()].map((n) => n.key).reverse();
+    mergeOrder = [...splitTree.postOrderTraversal()].map((n) => n.key);
 
     console.log(splitOrder);
     console.log(mergeOrder)
@@ -252,10 +246,7 @@ function getNextRow() {
   curStep++;
 
   if (curStep >= splitOrder.length && curStep < splitOrder.length + mergeOrder.length) {
-    if (curStep == splitOrder.length) 
-      splitOrder.reverse();
-
-    curNode = splitTree.find(splitOrder[curStep - splitOrder.length]);
+    curNode = splitTree.find(mergeOrder[curStep - mergeOrder.length]);
     val = curNode.getSortedValue;
 
     if(curNode.value.length <= 1) {
