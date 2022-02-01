@@ -1,10 +1,10 @@
 class BinaryTreeNode {
-    constructor(key, value = key, parent = null) {
+    constructor(key, value = key, parent = null, left = null, right = null) {
         this.key = key;
         this.value = value;
         this.parent = parent;
-        this.left = null;
-        this.right = null;
+        this.left = left;
+        this.right = right;
     }
 
     get isLeaf() {
@@ -13,6 +13,14 @@ class BinaryTreeNode {
 
     get hasChildren() {
         return !this.isLeaf;
+    }
+
+    get getSortedValue() {
+      let copy = [...this.value];
+      copy.sort((a, b) => {
+        return a - b;
+      });
+      return copy;
     }
 }
 
@@ -90,7 +98,7 @@ class BinaryTree {
 
 //-------------------------------------------------------------------
 
-let keys = [];
+// reduce global variables after fin
 let splitOrder = [];
 let splitTree;
 let mergeOrder = [];
@@ -110,107 +118,98 @@ function getRandArr() {
 
   let xReq = new XMLHttpRequest();
   //xReq.onreadystatechange = displayNewRow;
-  xReq.onreadystatechange = sort;
+  xReq.onreadystatechange = sorter;
 
   xReq.open("POST", window.location.pathname + "/get_arr", true);
   xReq.setRequestHeader("data", JSON.stringify(data));
   xReq.send();
 }
 
-function sort() {
+function sorter() {
   if (this.readyState == 4 && this.status == 200) {
     let origArr = JSON.parse(this.responseText).arr; // Gets the original array of random numbers
     let rowSize = origArr.length * boxSize;
     maxDepth = Math.ceil(Math.log(origArr.length) / Math.log(2)); // Finds the max depth of the tree
-    let markup = `<div class="arr-holder" id="master-hold"><div class="arr-row" id="master-row">` + formatRow(origArr) + `</div></div>`; // Populating the initial array on the screen
+    // Populating the initial array on the screen
 
     numRows = maxDepth * 2; // Number of arr-holder rows is twice max depth because need rows for both splitting and merging
 
-    for (i = 1; i < maxDepth * 2 + 1; i++) {
-      keys.push([]);
-
-      if (i < maxDepth) {      
-        rowSize = Math.ceil(origArr.length/(i * 2)) * boxSize;
-        markup += `<div class="arr-holder" id="arr-holder-${i}-a">`;
-
-        for (j = 0; j < Math.pow(2,i); j++) {
-          markup += `<div class="arr-row" id="arr-row-${i}${j}-a" style="width: ${rowSize}px"></div>`;
-        }
-
-        markup += `</div>`;
-      } else if (i > maxDepth) {
-        markup += `<div class="arr-holder" id="arr-holder-${i - maxDepth}-b">`;
-
-        for (j = 0; j < Math.pow(2,(i - maxDepth)); j++) {
-          markup += `<div class="arr-row" id="arr-row-${i - maxDepth}${j}-b"></div>`;
-        }
-
-        markup += `</div>`;
-      } else {
-        // clean up later
-        rowSize = Math.ceil(origArr.length/(i * 2)) * boxSize;
-        markup += `<div class="arr-holder" id="arr-holder-${maxDepth}-a">`;
-
-        markup += `<div class="arr-row" id="arr-row-${maxDepth}0-a" style="width: ${rowSize}px"></div>`;
-        markup += `<div class="arr-row" id="arr-row-${maxDepth}1-a" style="width: ${rowSize}px"></div>`;
-
-        for (j = 2; j < Math.pow(2,(i - 1)); j++) {
-          markup += `<div class="arr-row" style="width: ${rowSize}px"></div>`;
-        }
-        markup += `<div class="arr-row" id="arr-row-${maxDepth}2-a" style="width: ${rowSize}px"></div>`;
-        markup += `<div class="arr-row" id="arr-row-${maxDepth}3-a" style="width: ${rowSize}px"></div>`;
-
-        for (j = 2; j < Math.pow(2,(i - 1)); j++) {
-          markup += `<div class="arr-row" style="width: ${rowSize}px"></div>`;
-        }
-        markup += `</div>`;
-        rowSize = Math.ceil(origArr.length/( (maxDepth * 2 - i) * 2)) * boxSize;
-        console.log(rowSize);
-      }
-    }
-
-    /* for (i = 1; i < maxDepth + 1; i++) {
-      keys.push([]);
-      
-      markup += `<div class="arr-holder" id="arr-holder-${i}-b">`;
-
-      for (j = 0; j < i * 2; j++) {
-        markup += `<div class="arr-row" id="arr-row-${i}${j}-b"></div>`;
-      }
-
-      markup += `</div>`;
-    } */
-
-    $("#gameboard").append(markup); // Append markup to the end of the gameboard
+    fillGameBoard(origArr);
 
     // Sorting
     // --------------------------------------------------------------
 
     // Creates tree for the splitting steps
     splitTree = new BinaryTree(0, [...origArr]);
-    console.log(splitTree);
-
+//    console.log(splitTree);
     // Gets the final merged result
-    mergeResult = mergeSort(splitTree, [...origArr], 0,0);
+    mergeResult = mergeSort(splitTree, [...origArr], 0,0, getEmptyArr(maxDepth));//Array(maxDepth).fill([]));
 
     // Order of steps
     splitOrder = [...splitTree.preOrderTraversal()].map((n) => n.key);
-
-
+    
     // Creates tree for the merging steps
-    mergeTree = new BinaryTree(0, [...origArr.sort()]);//mergedArrs.pop());
+    mergeTree = new BinaryTree(0, [...mergeResult]);//mergedArrs.pop());
     // Gets the final merged result
-    mergeSort(mergeTree, [...origArr], 0, 0);
-
+    mergeSort(mergeTree, [...mergeResult], 0, 0, getEmptyArr(maxDepth));//Array(maxDepth).fill([]));
 
     // Creates tree for the merging steps
-    mergeOrder = [...mergeTree.preOrderTraversal()].map((n) => n.key);
+    mergeOrder = [...mergeTree.preOrderTraversal()].map((n) => n.key).reverse();
 
+   // console.log(splitOrder);
     console.log(mergeTree)
   }
 }
+function fillGameBoard(startArray) {
+  let markup = `<div class="arr-holder" id="master-hold" style="order: 0"><div class="arr-row" id="master-row">` + formatRow(startArray) + `</div></div>`;
+  let split = ``;
+  let sort = ``;
+  for (i = 1; i < maxDepth + 1; i++) {
+    rowSize = Math.ceil(startArray.length/(i * 2)) * boxSize;
+    split += `<div class="arr-holder" id="arr-holder-${i}-a" style="order: ${i}">`;
+    sort += `<div class="arr-holder" id="arr-holder-${i}-b" style="order: ${maxDepth * 2 - i}">`;
+
+    if (i < maxDepth) {
+      for (j = 0; j < Math.pow(2,i); j++) {
+        split += `<div class="arr-row" id="arr-row-${i}-${j}-a" style="width: ${rowSize}px"></div>`;
+        sort += `<div class="arr-row" id="arr-row-${i}-${j}-b" style="width: ${rowSize}px"></div>`;
+      }
+
+      split += `</div>`;
+      sort += `</div>`;
+    } else {
+      split += `<div class="arr-row" id="arr-row-${maxDepth}-0-a" style="width: ${rowSize}px"></div>`;
+      split += `<div class="arr-row" id="arr-row-${maxDepth}-1-a" style="width: ${rowSize}px"></div>`;
+
+      sort += `<div class="arr-row" id="arr-row-${maxDepth}-0-b" style="width: ${rowSize}px"></div>`;
+      sort += `<div class="arr-row" id="arr-row-${maxDepth}-1-b" style="width: ${rowSize}px"></div>`;
+
+      for (j = 2; j < Math.pow(2,(i - 1)); j++) {
+        split += `<div class="arr-row" style="width: ${rowSize}px"></div>`;
+        sort += `<div class="arr-row" style="width: ${rowSize}px"></div>`;
+      }
+      split += `<div class="arr-row" id="arr-row-${maxDepth}-2-a" style="width: ${rowSize}px"></div>`;
+      split += `<div class="arr-row" id="arr-row-${maxDepth}-3-a" style="width: ${rowSize}px"></div>`;
+
+      sort += `<div class="arr-row" id="arr-row-${maxDepth}-2-b" style="width: ${rowSize}px"></div>`;
+      sort += `<div class="arr-row" id="arr-row-${maxDepth}-3-b" style="width: ${rowSize}px"></div>`;
+
+      for (j = 2; j < Math.pow(2,(i - 1)); j++) {
+        split += `<div class="arr-row" style="width: ${rowSize}px"></div>`;
+        sort += `<div class="arr-row" style="width: ${rowSize}px"></div>`;
+      }
+
+      split += `</div>`;
+      sort += `</div>`;
+      //rowSize = Math.ceil(origArr.length/( (maxDepth * 2 - i) * 2)) * boxSize;
+    }
+  }
+
+  $("#gameboard").append(markup + split + sort); // Append markup to the end of the gameboard
+}
+
 // Merge sort algorithm
-function mergeSort(tree, arr, parentKey, depth) {
+function mergeSort(tree, arr, parentKey, depth, keys) {
   // Gets the length of half the array (rounding up)
   const half = Math.ceil(arr.length / 2);
 
@@ -221,22 +220,22 @@ function mergeSort(tree, arr, parentKey, depth) {
   const left = arr.splice(0, half);
 
   // Sets the key for the left side of the array, and inserts it into the tree
-  const leftKey = (depth + 1).toString() + keys[depth].length;
+  const leftKey = (depth + 1).toString() + `-` + keys[depth].length;
   tree.insert(parentKey, leftKey, [...left]);
 
   let curKey = keys[depth].length;
   keys[depth].push(curKey);
 
   // Sets the key for the right side of the array, and inserts it into the tree
-  const rightKey = (depth + 1).toString() + keys[depth].length;
+  const rightKey = (depth + 1).toString() + `-` + keys[depth].length;
   tree.insert(parentKey, rightKey, [...arr]);
 
   curKey = keys[depth].length;
   keys[depth].push(curKey);
 
   return merge(
-    mergeSort(tree, left, leftKey, depth + 1),
-    mergeSort(tree, arr, rightKey, depth + 1),
+    mergeSort(tree, left, leftKey, depth + 1, keys),
+    mergeSort(tree, arr, rightKey, depth + 1, keys),
     depth
   );
 }
@@ -265,48 +264,24 @@ function getNextRow() {
   curStep++;
 
   // If merging
-  if (curStep >= splitOrder.length && curStep < splitOrder.length + mergedArrs.length) {
-    // The "merge step" is just the current step minus the steps needed for splitting
-   /*  let curMergeStep = curStep - splitOrder.length;
-
-    // Gets the array for the current merge step *SHOULD REALLY BE A JSON OBJECT NO SPLIT ARRAY FOR THIS STUFF*
-    let curStepArr = mergedArrs[curMergeStep][0];
-    let curStepDepth = mergedArrs[curMergeStep][1];
-    console.log(mergedArrs); */
-
-    // Appends markup to the correct arr-holder
-    //$(`#arr-holder-${numRows - curStepDepth}`).append(formatRow(curStepArr));
-    console.log(mergeTree);
-    console.log(mergeOrder[curStep - mergeOrder.length]);
-    let curStepKey = mergeTree.find(mergeOrder[curStep - mergeOrder.length]).key;
-    let curStepArr = mergeTree.find(mergeOrder[curStep - mergeOrder.length]).value;
-
-    // Add the current array of numbers to the row
-    console.log(curStepKey);
-    console.log(curStepArr);
-    $(`#arr-row-${curStepKey}-a`).append(formatRow(curStepArr));
-
-    //$(`#arr-row-${4 - curStepDepth}-b`).append(formatRow(curStepArr));
-
+  if (curStep >= splitOrder.length && curStep < splitOrder.length + mergeOrder.length) {
+    let curNode = splitTree.find(splitOrder[curStep - splitOrder.length]);
+    $(`#arr-row-${curNode.key}-b`).append(formatRow(curNode.getSortedValue));
   } else if (curStep === splitOrder.length + mergedArrs.length) {
     // If this is the last merge step, put the final result of the merge into the last arr-holder
     //$(`#arr-holder-${numRows}-b`).append(formatRow(mergeResult));
   } else if (curStep >= splitOrder.length) {
     console.log("Error. Algorithm complete, no more steps");
   } else {
-    let curStepKey = splitTree.find(splitOrder[curStep]).key;
-    let curStepArr = splitTree.find(splitOrder[curStep]).value;
-
-    // Add the current array of numbers to the row
-    $(`#arr-row-${curStepKey}-a`).append(formatRow(curStepArr));
-    //$(`#arr-holder-${curStepKey.slice(0, curStepKey.length - 1)}`).append(formatRow(curStepArr));//merkup);
+    let curNode = splitTree.find(splitOrder[curStep]);
+    $(`#arr-row-${curNode.key}-a`).append(formatRow(curNode.value));
   }
 }
 
 // Formats the displayed rows accordingly (move from index but put in game index) 
 function formatRow(arr) {
   let n;
-  let html = ``;// = `<div class="arr-row">`;
+  let html = ``;
 
   if (arr.length == 1) {
     html += `<button class="arr arr-single" exp-val=${arr[0]}>${arr[0]}</button>`;
@@ -323,5 +298,14 @@ function formatRow(arr) {
     }
   }
 
-  return html;// + `</div>`;
+  return html;
 }
+
+function getEmptyArr(size) {
+  let arr = [];
+  for(i = 0; i < size; i++) {
+    arr.push([]);
+  }
+  return arr;
+}
+
