@@ -6,3 +6,4 @@ models/
 
 # Ignore the personal documents
 to-do.txt
+.DS_Store
