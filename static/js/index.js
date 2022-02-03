@@ -259,7 +259,7 @@ function getNextRow() {
     console.log("Error. Algorithm complete, no more steps");
     return;
   }
-
+  
   $(`#arr-row-${curNode.key}-a`).html(formatRow(val,curNode.key));
   $('#next-btn').blur();
 }
