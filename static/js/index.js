@@ -107,7 +107,7 @@ const boxSize = 45; // size of a single box within a display array (px)
 
 function getRandArr() {
   //used after start btn once
-  $(".start-btn").remove();
+  $("#start-btn").remove();
 
   let data = {};
 
@@ -244,18 +244,33 @@ function getNextRow() {
   let curNode, val;
   // Increment current step
   curStep++;
-
+  
+  //Using mergeOrder
   if (curStep >= splitOrder.length && curStep < splitOrder.length + mergeOrder.length) {
     curNode = splitTree.find(mergeOrder[curStep - mergeOrder.length]);
     val = curNode.getSortedValue;
-
+    //If Current Node is the root
+    if (curNode.key === 0)
+    {
+      $('#msg').text('Algorithm Complete!');  // Updates Message div to say "Algorithm Complete"
+    }
+    //Updating msg div to notify the merge
+    else {$('#msg').text('[Merging] @ Tree Row: '+ (Number(curNode.key.slice(0,1)) + 1) + 
+                              ', Tree Node: ' + (Number(curNode.key.slice(2,3)) + 1));
+    }
     if(curNode.value.length <= 1) {
       return getNextRow();
     }
-  } else if (curStep < splitOrder.length) {
+  } 
+  //Using splitOrder
+  else if (curStep < splitOrder.length) {
     curNode = splitTree.find(splitOrder[curStep]);
     val = curNode.value;
-  } else {
+
+    //Updating msg div to notify user a split is occurring
+    $('#msg').text('[Splitting] @ Tree Row: '+ (Number(curNode.key.slice(0,1)) + 1) + 
+                              ', Tree Node: ' + (Number(curNode.key.slice(2,3)) + 1));
+  } else { 
     console.log("Error. Algorithm complete, no more steps");
     return;
   }
@@ -270,17 +285,33 @@ function getPrevRow() {
     return;
   }
 
+  //Using mergeOrder
   if (curStep >= splitOrder.length && curStep < splitOrder.length + mergeOrder.length) {
     curNode = splitTree.find(mergeOrder[curStep - mergeOrder.length]);
     val = formatRow(curNode.value, curNode.key);
+
+    //If Current Node is the root
+    if (curNode.key === 0)
+    {
+      $('#msg').text('Algorithm Complete!');  // Updates Message div to say "Algorithm Complete"
+    }
+    //Updating msg div to notify the merge
+    else {$('#msg').text('[Merging] @ Tree Row: '+ (Number(curNode.key.slice(0,1)) + 1) + 
+                              ', Tree Node: ' + (Number(curNode.key.slice(2,3)) + 1));
+    }
 
     if(curNode.value.length <= 1) {
       curStep--;
       return getPrevRow();
     }
-  } else if (curStep < splitOrder.length) {
+  } 
+  //Using splitOrder
+  else if (curStep < splitOrder.length) {
     curNode = splitTree.find(splitOrder[curStep]);
     val = "";
+    //Updating msg div to notify user a split is occurring
+    $('#msg').text('[Splitting] @ Tree Row: '+ (Number(curNode.key.slice(0,1)) + 1) + 
+                              ', Tree Node: ' + (Number(curNode.key.slice(2,3)) + 1));
   } else {
     console.log("Error. Algorithm complete, no more steps");
     return;
