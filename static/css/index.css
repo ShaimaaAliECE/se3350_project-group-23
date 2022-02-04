@@ -100,37 +100,41 @@ body {
 }
 /* Array atyling */
 .arr {
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    background-color: rgba(0,0,0,0.1);;
-    height: 45px;
-    width: 45px;
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
-    border-right: 1px solid black;
-    border-left: 1px solid black;
-    transition: background-color 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  height: 45px;
+  width: 45px;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  transition: background-color 0.5s ease;
 }
 .arr-start {
-    border-top-left-radius: 25%;
-    border-bottom-left-radius: 25%;
-    border-left: 2px solid black !important
+  border-top-left-radius: 25%;
+  border-bottom-left-radius: 25%;
+  border-left: 2px solid black !important;
 }
 .arr-single {
-    border: 2px solid black;
-    border-radius: 25%;
+  border: 2px solid black;
+  border-radius: 25%;
 }
 .arr-end {
-    border-top-right-radius: 25%;
-    border-bottom-right-radius: 25%;
-    border-right: 2px solid black !important
-
+  border-top-right-radius: 25%;
+  border-bottom-right-radius: 25%;
+  border-right: 2px solid black !important;
 }
 .num-slot {
-  display: flex; 
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 30px;
   height: 30px;
+}
+
+#controls {
+  display: flex;
+  flex-direction: column;
 }
