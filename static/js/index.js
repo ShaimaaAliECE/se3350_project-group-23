@@ -341,3 +341,14 @@ function getEmptyArr(size) {
   return arr;
 }
 
+function confirmQuit(){    //creates a confirmation box
+  let confirmAction = confirm("Are you sure you want to quit the game?");   //asks the user if they're sure they want to quit
+  if(confirmAction)           //if they click the yes button this returns true and redirects them to the home page
+  {
+    window.location = "/";
+  }
+  else                       //if the user clicks cancel they get a message to continue the game
+  {
+    alert("Continue Game!");
+  }
+}
