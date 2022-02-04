@@ -13,4 +13,6 @@ block content
         div.arr-holder(style="order: -1") 
             div.arr-row
                 div#msg
-                button.btn#start-btn(onclick="getRandArr()")= "Start"
+                div#quit
+                button.btn(onclick="confirmQuit()")= "Quit"
+                button.btn.start-btn(onclick="getRandArr()")= "Start"

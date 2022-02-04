@@ -239,6 +239,7 @@ function merge(left, right, depth) {
   return [...arr, ...left, ...right];
 }
 
+
 // dont need to sdn stuff as post due to cookies
 function getNextRow() {
   let curNode, val;
@@ -277,7 +278,25 @@ function getNextRow() {
   
   $(`#arr-row-${curNode.key}-a`).html(formatRow(val,curNode.key));
   $('#next-btn').blur();
+
+  //changes the colour when the "next button" is pressed
+  $('#next-btn').on("click", updateColour(curNode.key));
 }
+
+function updateColour(val) {
+  //sets intial element colour to green
+  $(`#arr-row-${val}-a`).css('background-color', "lime"); 
+  //timer set to keep element green for 1sec
+  setTimeout(function() {
+    revertColour(val);
+  }, 1000);
+}
+
+function revertColour(val) {
+  //removes green background
+  $(`#arr-row-${val}-a`).css('background-color', "");
+}
+
 function getPrevRow() {
   let curNode, val;
 
@@ -353,3 +372,14 @@ function getEmptyArr(size) {
   return arr;
 }
 
+function confirmQuit(){    //creates a confirmation box
+  let confirmAction = confirm("Are you sure you want to quit the game?");   //asks the user if they're sure they want to quit
+  if(confirmAction)           //if they click the yes button this returns true and redirects them to the home page
+  {
+    window.location = "/";
+  }
+  else                       //if the user clicks cancel they get a message to continue the game
+  {
+    alert("Continue Game!");
+  }
+}
