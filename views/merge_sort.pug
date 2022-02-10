@@ -11,5 +11,8 @@ block content
                     i.fas.fa-arrow-right
 
         div.arr-holder(style="order: -1") 
-            div.arr-row
+            div.arr-row#controls
                 button.btn.start-btn(onclick="getRandArr()")= "Start"
+                button.btn(onclick="confirmQuit()")= "Quit"
+                div#msg
+                
