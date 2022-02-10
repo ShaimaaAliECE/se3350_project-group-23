@@ -260,6 +260,17 @@ function getNextRow() {
     return;
   }
 
+  console.log(splitTree.find(curNode.parent.key).left.key== curNode.key ? 'left': 'right');
+
+  if(splitTree.find(curNode.parent.key).left.key != curNode.key)
+  {
+    document.documentElement.style.setProperty('--animation-translatex', '-50%')
+  }
+  else
+  {
+    document.documentElement.style.setProperty('--animation-translatex', '50%')
+  }
+
   $(`#arr-row-${curNode.key}-a`).html(formatRow(val,curNode.key));
   $('#next-btn').blur();
 }
