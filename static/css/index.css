@@ -29,6 +29,8 @@
   --dark-purple: rgb(40, 0, 70);
   --v-dark-purple: rgb(10, 0, 20);
   --c-dark-purple: white; /*rgb(245, 235, 235); /* Very light pink */
+
+  --animation-translatex : 50%;
 }
 
 body {
@@ -134,7 +136,31 @@ body {
   height: 30px;
 }
 
-#controls {
-  display: flex;
-  flex-direction: column;
+.arr-row > .arr {
+
+  animation: append-animate-variables 0.8s linear;
+
+}
+
+@keyframes append-animate {
+  from 
+  {
+    transform: translatex(50%) translatey(-50%);
+  }
+  to 
+  {
+    transform: translatex(0%) translatey(0%)
+  }
+}
+
+@keyframes append-animate-variables {
+  from 
+  {
+    transform: translatex(var(--animation-translatex)) translatey(-50%);
+  }
+  to 
+  {
+    transform: translatex(0%) translatey(0%)
+  }
+
 }

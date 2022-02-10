@@ -293,11 +293,19 @@ function getNextRow() {
     return;
   }
 
-  $(`#arr-row-${curNode.key}-a`).html(formatRow(val, curNode.key));
-  $("#next-btn").blur();
+  console.log(splitTree.find(curNode.parent.key).left.key== curNode.key ? 'left': 'right');
 
-  //changes the colour when the "next button" is pressed
-  $("#next-btn").on("click", updateColour(curNode.key));
+  if(splitTree.find(curNode.parent.key).left.key != curNode.key)
+  {
+    document.documentElement.style.setProperty('--animation-translatex', '-50%')
+  }
+  else
+  {
+    document.documentElement.style.setProperty('--animation-translatex', '50%')
+  }
+
+  $(`#arr-row-${curNode.key}-a`).html(formatRow(val,curNode.key));
+  $('#next-btn').blur();
 }
 
 function updateColour(val) {
