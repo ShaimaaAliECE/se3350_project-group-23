@@ -1,25 +1,26 @@
 const express = require('express');
 var bodyParser = require('body-parser');
-
-// Routes
-var mergeSortRouter = require('./routes/mergesort_routes');
-//var infoRouter = require('./routes/info_routes');
-
-const app = express();
-app.use(bodyParser.urlencoded({extended: true})); 
-const path = require('path'); //Used for directory path stuff
 const cookieParser = require("cookie-parser");
+const path = require('path'); //Used for directory path stuff
+const app = express();
+
+app.use(bodyParser.urlencoded({extended: true})); 
 app.use(cookieParser());
+
+// Sets the view engine and view path
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
 // Public client side static file
 app.use(express.static('static'));
 
-app.use('/merge_sort', mergeSortRouter);
-//app.use('/admin', adminRouter);
+// Routes
+var mergeSortRouter = require('./routes/mergesort_routes');
 
-//use may not be correct as it seems to love to access this
+// URLs used by routes
+app.use('/merge_sort', mergeSortRouter);
+
+// Base case (Home) if no matching Route
 app.use('/', (req, res, next) => {
     console.log('-> Rendering Home Page:');
     res.status(200).render("home", {pageTitle: "Home", tabTitle: "Home"});
@@ -41,4 +42,5 @@ app.use(function(err, req, res, next) {
     })
 });
 
+// Listens on port 2000
 app.listen(2000);
