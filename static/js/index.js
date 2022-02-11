@@ -76,6 +76,7 @@ function fillGameBoard(startArray, maxDepth) {
 // Gets the next step in the sorting algorithm
 function getNextRow() {
   let curNode, val;
+
   // Increment current step
   curStep++;
 
@@ -86,19 +87,9 @@ function getNextRow() {
   ) {
     curNode = splitTree.find(mergeOrder[curStep - mergeOrder.length]);
     val = curNode.getSortedValue;
-    //If Current Node is the root
-    if (curNode.key === 0) {
-      $("#msg").text("Algorithm Complete!"); // Updates Message div to say "Algorithm Complete"
-    }
-    //Updating msg div to notify the merge
-    else {
-      $("#msg").text(
-        "[Merging] @ Tree Row: " +
-          (Number(curNode.key.slice(0, 1)) + 1) +
-          ", Tree Node: " +
-          (Number(curNode.key.slice(2, 3)) + 1)
-      );
-    }
+
+    feedbackText(curNode.key,"Merging");//Updating msg div to notify the merge
+
     if (curNode.value.length <= 1) {
       return getNextRow();
     }
@@ -108,53 +99,19 @@ function getNextRow() {
     curNode = splitTree.find(splitOrder[curStep]);
     val = curNode.value;
 
-    //Updating msg div to notify user a split is occurring
-    $("#msg").text(
-      "[Splitting] @ Tree Row: " +
-        (Number(curNode.key.slice(0, 1)) + 1) +
-        ", Tree Node: " +
-        (Number(curNode.key.slice(2, 3)) + 1)
-    );
+    feedbackText(curNode.key,"Splitting");//Updating msg div to notify user a split is occurring
+    animateSplit(curNode);//Animates the splitting arrays action
+
   } else {
     console.log("Error. Algorithm complete, no more steps");
     return;
   }
 
   $(`#arr-row-${curNode.key}`).html(formatRow(val, curNode.key));
-  $("#next-btn").blur();
+  updateColour(curNode.key);
 
-  //changes the colour when the "next button" is pressed
-  $("#next-btn").on("click", updateColour(curNode.key));
-
-  // If the current node is a to the left of its parent animate going left, else animate going right
-  if (curNode.key === 0) {
-    document.documentElement.style.setProperty("--animation-translatex", "0%");
-  } else if (splitTree.find(curNode.parent.key).left.key != curNode.key) {
-    document.documentElement.style.setProperty(
-      "--animation-translatex",
-      "-50%"
-    );
-  } else {
-    document.documentElement.style.setProperty("--animation-translatex", "50%");
-  }
-
-  $(`#arr-row-${curNode.key}`).html(formatRow(val, curNode.key));
   // Remove focus from the next button
   $("#next-btn").blur();
-}
-
-function updateColour(val) {
-  //sets intial element colour to green
-  $(`#arr-row-${val}`).css("background-color", "lime");
-  //timer set to keep element green for 1sec
-  setTimeout(function () {
-    revertColour(val);
-  }, 1000);
-}
-
-function revertColour(val) {
-  //removes green background
-  $(`#arr-row-${val}`).css("background-color", "");
 }
 
 function getPrevRow() {
@@ -256,4 +213,37 @@ function confirmQuit() {
   else {
     alert("Continue Game!");
   }
+}
+
+function animateSplit(node) {
+  // If the current node is a to the left of its parent animate going left, else animate going right
+  if (node.key === 0) {
+    document.documentElement.style.setProperty("--animation-translatex", "0%");
+  } else if (splitTree.find(node.parent.key).left.key != node.key) {
+    document.documentElement.style.setProperty("--animation-translatex","-50%");
+  } else {
+    document.documentElement.style.setProperty("--animation-translatex", "50%");
+  }
+}
+
+function feedbackText(key,dir) {
+  $("#msg").text(
+    key==0 ?
+    "Algorithm Complete!"
+    :
+    "[" + dir + "] @ Tree Row: " +
+      (Number(key.slice(0, 1)) + 1) +
+      ", Tree Node: " +
+      (Number(key.slice(2, 3)) + 1)
+  );
+}
+
+function updateColour(val) {
+  let el = $(`#arr-row-${val}`).children();
+
+  //sets intial element colour to green
+  el.css("background-color", "lime");
+
+  //timer set to keep element green for 1sec
+  setTimeout(() => { el.css("background-color", "");}, 1000);
 }
