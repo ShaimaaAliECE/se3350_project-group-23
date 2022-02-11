@@ -65,6 +65,9 @@ body {
   border-radius: 50%;
 }
 
+#next-btn, #prev-btn {
+  font-size: 20px;
+}
 /* non game pages*/
 .select-menu {
   width: 100%;

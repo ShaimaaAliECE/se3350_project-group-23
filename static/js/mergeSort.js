@@ -29,24 +29,8 @@ function mergeSort(tree, arr, keys, parentKey = 0, depth = 0) {
   curKey = keys[depth].length;
   keys[depth].push(curKey);
 
-  return merge(
+  return (
     mergeSort(tree, left, keys, leftKey, depth + 1),
-    mergeSort(tree, arr, keys, rightKey, depth + 1),
-    depth
+    mergeSort(tree, arr, keys, rightKey, depth + 1)
   );
-}
-
-// Merge two arrays
-function merge(left, right, depth) {
-  let arr = [];
-
-  // Break if any of the arrays are empty
-  while (left.length && right.length) {
-    // Pushes the lowest of the two values (first value from each array)
-    if (left[0] < right[0]) arr.push(left.shift());
-    else arr.push(right.shift());
-  }
-
-  // Concatenating leftover elements
-  return [...arr, ...left, ...right];
 }

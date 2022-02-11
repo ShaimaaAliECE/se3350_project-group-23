@@ -6,15 +6,17 @@ header#header-contents
             if algLvl
                 span Level #{algLvl}
 
-    //- div.col-3.runner-center= pageTitle
-        
+    //- div  
+            div Sorting Alg Game 
+            div= pageTitle 
+                if algLvl
+                    span  Level #{algLvl}
 
     div.col-3.runner-right
-        a(class='link-text' href='/')
-            button 
-                i.fas.fa-home
-        div.line-seperator
-        a(class='link-text' href='/info/about') About
-        div.line-seperator
-        a(class='link-text' href='/admin') Admin
+        a(class='link-text' href='/' style="font-size: 25px;") 
+            i.fas.fa-home
+        //div.line-seperator
+        //a(class='link-text' href='/info/about') About
+        //div.line-seperator
+        //a(class='link-text' href='/admin') Admin
 

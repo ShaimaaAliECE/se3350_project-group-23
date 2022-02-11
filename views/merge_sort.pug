@@ -1,18 +1,22 @@
 extends index.pug
+block scripts 
+    script(type="text/javascript" src="/js/merge_sort_index.js")
+    script(type="text/javascript" src="/js/BinaryTree.js")
+    script(type="text/javascript" src="/js/mergeSort.js")
+
 
 block content 
     //-- needs to change to accomadate lvl 5
     div#gameboard(style="width: 100%; display: flex; flex-direction: column")
-        div.arr-holder(style="order: -2") 
-            div.arr-row
-                button.btn.btn-secondary#prev-btn(onclick="getPrevRow()")
-                    i.fas.fa-arrow-left 
-                button.btn.btn-secondary#next-btn(onclick="getNextRow()")
-                    i.fas.fa-arrow-right
-
         div.arr-holder(style="order: -1") 
-            div.arr-row#controls
-                button.btn.start-btn(onclick="getRandArr()")= "Start"
-                button.btn(onclick="confirmQuit()")= "Quit"
+            div.arr-row(style="width: 30%")
+                button.btn.btn-secondary(onclick="confirmQuit()")= "Quit"
+            div.arr-row(style=`height: 75px; width: 40%`)
                 div#msg
+            div.arr-row(style="width: 30%")
+                div.btn-group
+                    button.btn.btn-secondary#prev-btn(onclick="getPrevRow()")
+                        i.fas.fa-arrow-left 
+                    button.btn.btn-secondary#next-btn(onclick="getNextRow()")
+                        i.fas.fa-arrow-right
                 
