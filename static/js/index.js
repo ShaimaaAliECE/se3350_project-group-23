@@ -5,43 +5,33 @@ let mergeOrder = [];
 let curStep = 0;
 const boxSize = 45; // size of a single box within a display array (px)
 
+// On start button click, remove start btn and get the random array from the server, and call sorter fn
 function getRandArr() {
   //used after start btn once
   $(".start-btn").remove();
 
-  let data = {};
-
-  let xReq = new XMLHttpRequest();
-  //xReq.onreadystatechange = displayNewRow;
-  xReq.onreadystatechange = sorter;
-
-  xReq.open("POST", window.location.pathname + "/get_arr", true);
-  xReq.setRequestHeader("data", JSON.stringify(data));
-  xReq.send();
+  $.post("merge_sort/get_arr", (res) => {
+    // Sends array from server to the sorter fn
+    sorter(res.arr);
+  });
 }
 
-function sorter() {
-  if (this.readyState == 4 && this.status == 200) {
-    let origArr = JSON.parse(this.responseText).arr; // Gets the original array of random numbers
+// Sorts the array and keeps track of the order of the algorithm steps
+function sorter(origArr) {
+  maxDepth = Math.ceil(Math.log(origArr.length) / Math.log(2)); // Finds the max depth of the tree
 
-    maxDepth = Math.ceil(Math.log(origArr.length) / Math.log(2)); // Finds the max depth of the tree
+  fillGameBoard(origArr, maxDepth);
 
-    fillGameBoard(origArr, maxDepth);
+  // Creates tree for the splitting steps
+  splitTree = new BinaryTree(0, [...origArr]);
+  // Gets the final merged result
+  mergeSort(splitTree, [...origArr], getEmptyArr(maxDepth)); // Calls the mergesort alg function
 
-    // Creates tree for the splitting steps
-    splitTree = new BinaryTree(0, [...origArr]);
-    // Gets the final merged result
-    mergeSort(splitTree, [...origArr], 0, 0, getEmptyArr(maxDepth)); //CHANGE TO SOMETHING ABOUT POPULATING TREE
+  // Order of steps
+  splitOrder = [...splitTree.preOrderTraversal()].map((n) => n.key);
 
-    // Order of steps
-    splitOrder = [...splitTree.preOrderTraversal()].map((n) => n.key);
-
-    // Creates tree for the merging steps
-    mergeOrder = [...splitTree.postOrderTraversal()].map((n) => n.key);
-
-    console.log(splitOrder);
-    console.log(mergeOrder);
-  }
+  // Creates tree for the merging steps
+  mergeOrder = [...splitTree.postOrderTraversal()].map((n) => n.key);
 }
 
 function fillGameBoard(startArray, maxDepth) {
@@ -101,53 +91,7 @@ function fillGameBoard(startArray, maxDepth) {
   $("#gameboard").append(dom + split + sort + sub); // Append markup to the end of the gameboard
 }
 
-// Merge sort algorithm
-function mergeSort(tree, arr, parentKey, depth, keys) {
-  // Gets the length of half the array (rounding up)
-  const half = Math.ceil(arr.length / 2);
-
-  // Base case
-  if (arr.length < 2) return arr;
-
-  // Left side of the array, right side will be stored in "arr" since splice removes these values from original arr
-  const left = arr.splice(0, half);
-
-  // Sets the key for the left side of the array, and inserts it into the tree
-  const leftKey = (depth + 1).toString() + `-` + keys[depth].length;
-  tree.insert(parentKey, leftKey, [...left]);
-
-  let curKey = keys[depth].length;
-  keys[depth].push(curKey);
-
-  // Sets the key for the right side of the array, and inserts it into the tree
-  const rightKey = (depth + 1).toString() + `-` + keys[depth].length;
-  tree.insert(parentKey, rightKey, [...arr]);
-
-  curKey = keys[depth].length;
-  keys[depth].push(curKey);
-
-  return merge(
-    mergeSort(tree, left, leftKey, depth + 1, keys),
-    mergeSort(tree, arr, rightKey, depth + 1, keys),
-    depth
-  );
-}
-// Merge two arrays
-function merge(left, right, depth) {
-  let arr = [];
-
-  // Break if any of the arrays are empty
-  while (left.length && right.length) {
-    // Pushes the lowest of the two values (first value from each array)
-    if (left[0] < right[0]) arr.push(left.shift());
-    else arr.push(right.shift());
-  }
-
-  // Concatenating leftover elements
-  return [...arr, ...left, ...right];
-}
-
-// dont need to sdn stuff as post due to cookies
+// Gets the next step in the sorting algorithm
 function getNextRow() {
   let curNode, val;
   // Increment current step
@@ -200,13 +144,10 @@ function getNextRow() {
   //changes the colour when the "next button" is pressed
   $("#next-btn").on("click", updateColour(curNode.key));
 
-  console.log(
-    splitTree.find(curNode.parent.key).left.key == curNode.key
-      ? "left"
-      : "right"
-  );
-
-  if (splitTree.find(curNode.parent.key).left.key != curNode.key) {
+  // If the current node is a to the left of its parent animate going left, else animate going right
+  if (curNode.key === 0) {
+    document.documentElement.style.setProperty("--animation-translatex", "0%");
+  } else if (splitTree.find(curNode.parent.key).left.key != curNode.key) {
     document.documentElement.style.setProperty(
       "--animation-translatex",
       "-50%"
@@ -216,6 +157,7 @@ function getNextRow() {
   }
 
   $(`#arr-row-${curNode.key}-a`).html(formatRow(val, curNode.key));
+  // Remove focus from the next button
   $("#next-btn").blur();
 }
 
@@ -313,6 +255,7 @@ function formatRow(arr, key) {
   return html;
 }
 
+// Gets an empty 2D array
 function getEmptyArr(size) {
   let arr = [];
   for (i = 0; i < size; i++) {

@@ -30,7 +30,7 @@
   --v-dark-purple: rgb(10, 0, 20);
   --c-dark-purple: white; /*rgb(245, 235, 235); /* Very light pink */
 
-  --animation-translatex : 50%;
+  --animation-translatex: 0%;
 }
 
 body {
@@ -137,30 +137,23 @@ body {
 }
 
 .arr-row > .arr {
-
   animation: append-animate-variables 0.8s linear;
-
 }
 
 @keyframes append-animate {
-  from 
-  {
+  from {
     transform: translatex(50%) translatey(-50%);
   }
-  to 
-  {
-    transform: translatex(0%) translatey(0%)
+  to {
+    transform: translatex(0%) translatey(0%);
   }
 }
 
 @keyframes append-animate-variables {
-  from 
-  {
+  from {
     transform: translatex(var(--animation-translatex)) translatey(-50%);
   }
-  to 
-  {
-    transform: translatex(0%) translatey(0%)
+  to {
+    transform: translatex(0%) translatey(0%);
   }
-
 }
