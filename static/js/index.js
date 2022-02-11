@@ -38,57 +38,39 @@ function fillGameBoard(startArray, maxDepth) {
   let rowSize = startArray.length * boxSize;
 
   let dom =
-    `<div class="arr-holder" id="dom-hold" style="order: 0"><div class="arr-row" id="arr-row-0-a">` +
+    `<div class="arr-holder" id="dom-hold" style="order: 0"><div class="arr-row" id="arr-row-0">` +
     formatRow(startArray, "0") +
     `</div></div>`;
-  let sub = `<div class="arr-holder" id="sub-hold" style="order: ${
-    maxDepth * 3
-  }"><div class="arr-row" id="arr-row-0-b"></div></div>`;
   let split = ``;
-  let sort = ``;
   for (i = 1; i < maxDepth + 1; i++) {
     rowSize = Math.ceil(startArray.length / (i * 2)) * boxSize;
-    split += `<div class="arr-holder" id="arr-holder-${i}-a" style="order: ${i}">`;
-    sort += `<div class="arr-holder" id="arr-holder-${i}-b" style="order: ${
-      maxDepth * 2 - i
-    }">`;
+    split += `<div class="arr-holder" id="arr-holder-${i}" style="order: ${i}">`;
 
     if (i < maxDepth) {
       for (j = 0; j < Math.pow(2, i); j++) {
-        split += `<div class="arr-row" id="arr-row-${i}-${j}-a" style="width: ${rowSize}px;"></div>`;
-        sort += `<div class="arr-row" id="arr-row-${i}-${j}-b" style="width: ${rowSize}px"></div>`;
+        split += `<div class="arr-row" id="arr-row-${i}-${j}" style="width: ${rowSize}px;"></div>`;
       }
 
       split += `</div>`;
-      sort += `</div>`;
     } else {
-      split += `<div class="arr-row" id="arr-row-${maxDepth}-0-a" style="width: ${rowSize}px"></div>`;
-      split += `<div class="arr-row" id="arr-row-${maxDepth}-1-a" style="width: ${rowSize}px"></div>`;
-
-      sort += `<div class="arr-row" id="arr-row-${maxDepth}-0-b" style="width: ${rowSize}px"></div>`;
-      sort += `<div class="arr-row" id="arr-row-${maxDepth}-1-b" style="width: ${rowSize}px"></div>`;
+      split += `<div class="arr-row" id="arr-row-${maxDepth}-0" style="width: ${rowSize}px"></div>`;
+      split += `<div class="arr-row" id="arr-row-${maxDepth}-1" style="width: ${rowSize}px"></div>`;
 
       for (j = 2; j < Math.pow(2, i - 1); j++) {
         split += `<div class="arr-row" style="width: ${rowSize}px"></div>`;
-        sort += `<div class="arr-row" style="width: ${rowSize}px"></div>`;
       }
-      split += `<div class="arr-row" id="arr-row-${maxDepth}-2-a" style="width: ${rowSize}px"></div>`;
-      split += `<div class="arr-row" id="arr-row-${maxDepth}-3-a" style="width: ${rowSize}px"></div>`;
-
-      sort += `<div class="arr-row" id="arr-row-${maxDepth}-2-b" style="width: ${rowSize}px"></div>`;
-      sort += `<div class="arr-row" id="arr-row-${maxDepth}-3-b" style="width: ${rowSize}px"></div>`;
+      split += `<div class="arr-row" id="arr-row-${maxDepth}-2" style="width: ${rowSize}px"></div>`;
+      split += `<div class="arr-row" id="arr-row-${maxDepth}-3" style="width: ${rowSize}px"></div>`;
 
       for (j = 2; j < Math.pow(2, i - 1); j++) {
         split += `<div class="arr-row" style="width: ${rowSize}px"></div>`;
-        sort += `<div class="arr-row" style="width: ${rowSize}px"></div>`;
       }
 
       split += `</div>`;
-      sort += `</div>`;
     }
   }
 
-  $("#gameboard").append(dom + split + sort + sub); // Append markup to the end of the gameboard
+  $("#gameboard").append(dom + split); // Append markup to the end of the gameboard
 }
 
 // Gets the next step in the sorting algorithm
@@ -138,7 +120,7 @@ function getNextRow() {
     return;
   }
 
-  $(`#arr-row-${curNode.key}-a`).html(formatRow(val, curNode.key));
+  $(`#arr-row-${curNode.key}`).html(formatRow(val, curNode.key));
   $("#next-btn").blur();
 
   //changes the colour when the "next button" is pressed
@@ -156,14 +138,14 @@ function getNextRow() {
     document.documentElement.style.setProperty("--animation-translatex", "50%");
   }
 
-  $(`#arr-row-${curNode.key}-a`).html(formatRow(val, curNode.key));
+  $(`#arr-row-${curNode.key}`).html(formatRow(val, curNode.key));
   // Remove focus from the next button
   $("#next-btn").blur();
 }
 
 function updateColour(val) {
   //sets intial element colour to green
-  $(`#arr-row-${val}-a`).css("background-color", "lime");
+  $(`#arr-row-${val}`).css("background-color", "lime");
   //timer set to keep element green for 1sec
   setTimeout(function () {
     revertColour(val);
@@ -172,7 +154,7 @@ function updateColour(val) {
 
 function revertColour(val) {
   //removes green background
-  $(`#arr-row-${val}-a`).css("background-color", "");
+  $(`#arr-row-${val}`).css("background-color", "");
 }
 
 function getPrevRow() {
@@ -225,7 +207,7 @@ function getPrevRow() {
     return;
   }
 
-  $(`#arr-row-${curNode.key}-a`).html(val);
+  $(`#arr-row-${curNode.key}`).html(val);
   curStep--;
   $("#prev-btn").blur();
 }
