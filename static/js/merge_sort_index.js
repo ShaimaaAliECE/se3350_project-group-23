@@ -7,7 +7,7 @@ const boxSize = 45; // size of a single box within a display array (px)
 
 // On start button click, remove start btn and get the random array from the server, and call sorter fn
 $(() => {
-    $.post("merge_sort/get_arr", (res) => {
+    $.post(`${window.location.href}/get_arr`, (res) => {
       // Sends array from server to the sorter fn
       sorter(res.arr);
     });

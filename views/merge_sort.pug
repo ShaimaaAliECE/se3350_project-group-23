@@ -4,6 +4,18 @@ block scripts
     script(type="text/javascript" src="/js/BinaryTree.js")
     script(type="text/javascript" src="/js/mergeSort.js")
 
+//- Here as an example of how to include level specific script
+    // level 1 and 2 will share text feedback
+    // level 1 needs special colour and animation feedback elements
+    case algLvl
+        when 1
+            script(type="text/javascript" src="/js/text_feedback.js")
+            script(type="text/javascript" src="/js/lvl_1_feedback.js")
+        when 2
+            script(type="text/javascript" src="/js/text_feedback.js")
+        default
+            script(type="text/javascript" src="/js/feedback.js")
+
 
 block content 
     //-- needs to change to accomadate lvl 5
