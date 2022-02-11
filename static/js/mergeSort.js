@@ -5,7 +5,18 @@
  * @param {string[]} keys - An array of all of the keys in the BinaryTree
  * @returns {int[]} arr - The sorted array
  */
-function mergeSort(tree, arr, keys, parentKey = 0, depth = 0) {
+function mergeSort(tree, arr, keys = null, parentKey = 0, depth = 0) {
+  // If this is being called for the first time (keys will be null) populate the 2D keys array with an empty array for each row of the tree (by calculating max depth)
+  if (!keys) {
+    keys = [];
+
+    let maxDepth = Math.ceil(Math.log(arr.length) / Math.log(2)); // Finds the max depth of the tree
+
+    for (i = 0; i < maxDepth; i++) {
+      keys.push([]);
+    }
+  }
+
   // Gets the length of half the array (rounding up)
   const half = Math.ceil(arr.length / 2);
 

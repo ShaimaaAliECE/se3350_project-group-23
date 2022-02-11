@@ -7,12 +7,11 @@ const boxSize = 45; // size of a single box within a display array (px)
 
 // On start button click, remove start btn and get the random array from the server, and call sorter fn
 $(() => {
-    $.post(`${window.location.href}/get_arr`, (res) => {
-      // Sends array from server to the sorter fn
-      sorter(res.arr);
-    });
-  }
-);
+  $.post(`${window.location.href}/get_arr`, (res) => {
+    // Sends array from server to the sorter fn
+    sorter(res.arr);
+  });
+});
 
 // Sorts the array and keeps track of the order of the algorithm steps
 function sorter(origArr) {
@@ -23,13 +22,104 @@ function sorter(origArr) {
   // Creates tree for the splitting steps
   splitTree = new BinaryTree(0, [...origArr]);
   // Gets the final merged result
-  mergeSort(splitTree, [...origArr], getEmptyArr(maxDepth)); // Calls the mergesort alg function
+  mergeSort(splitTree, [...origArr]); // Calls the mergesort alg function
 
   // Order of steps
   splitOrder = [...splitTree.preOrderTraversal()].map((n) => n.key);
 
   // Creates tree for the merging steps
   mergeOrder = [...splitTree.postOrderTraversal()].map((n) => n.key);
+}
+
+// Gets the next step in the sorting algorithm
+function getNextRow() {
+  let curNode, val;
+
+  // Increment current step
+  curStep++;
+
+  //Using mergeOrder
+  if (
+    curStep >= splitOrder.length &&
+    curStep < splitOrder.length + mergeOrder.length
+  ) {
+    curNode = splitTree.find(mergeOrder[curStep - mergeOrder.length]);
+    val = curNode.getSortedValue;
+
+    feedbackText(curNode.key, "Merging"); //Updating msg div to notify the merge
+
+    if (curNode.value.length <= 1) {
+      return getNextRow();
+    }
+  }
+  //Using splitOrder
+  else if (curStep < splitOrder.length) {
+    curNode = splitTree.find(splitOrder[curStep]);
+    val = curNode.value;
+
+    feedbackText(curNode.key, "Splitting"); //Updating msg div to notify user a split is occurring
+    animateSplit(curNode); //Animates the splitting arrays action
+  } else {
+    console.log("Error. Algorithm complete, no more steps");
+    return;
+  }
+
+  $(`#arr-row-${curNode.key}`).html(formatRow(val, curNode.key));
+  updateColour(curNode.key);
+
+  // Remove focus from the next button
+  $("#next-btn").blur();
+}
+
+function getPrevRow() {
+  let curNode, val;
+
+  if (curStep == 0) {
+    $("#prev-btn").blur();
+    return;
+  }
+
+  //Using mergeOrder
+  if (
+    curStep >= splitOrder.length &&
+    curStep < splitOrder.length + mergeOrder.length
+  ) {
+    curNode = splitTree.find(mergeOrder[curStep - mergeOrder.length]);
+    val = formatRow(curNode.value, curNode.key);
+
+    feedbackText(curNode.key, "Merging");
+
+    if (curNode.value.length <= 1) {
+      curStep--;
+      return getPrevRow();
+    }
+  }
+  //Using splitOrder
+  else if (curStep < splitOrder.length) {
+    curNode = splitTree.find(splitOrder[curStep]);
+    val = "";
+    //Updating msg div to notify user a split is occurring
+    feedbackText(curNode.key, "Splitting");
+  } else {
+    console.log("Error. Algorithm complete, no more steps");
+    return;
+  }
+
+  $(`#arr-row-${curNode.key}`).html(val);
+  curStep--;
+  $("#prev-btn").blur();
+}
+
+function confirmQuit() {
+  //creates a confirmation box
+  let confirmAction = confirm("Are you sure you want to quit the game?"); //asks the user if they're sure they want to quit
+  if (confirmAction) {
+    //if they click the yes button this returns true and redirects them to the home page
+    window.location = "/";
+  } //if the user clicks cancel they get a message to continue the game
+  else {
+    alert("Continue Game!");
+  }
 }
 
 function fillGameBoard(startArray, maxDepth) {
@@ -71,153 +161,30 @@ function fillGameBoard(startArray, maxDepth) {
   $("#gameboard").append(dom + split); // Append markup to the end of the gameboard
 }
 
-// Gets the next step in the sorting algorithm
-function getNextRow() {
-  let curNode, val;
-
-  // Increment current step
-  curStep++;
-
-  //Using mergeOrder
-  if (
-    curStep >= splitOrder.length &&
-    curStep < splitOrder.length + mergeOrder.length
-  ) {
-    curNode = splitTree.find(mergeOrder[curStep - mergeOrder.length]);
-    val = curNode.getSortedValue;
-
-    feedbackText(curNode.key,"Merging");//Updating msg div to notify the merge
-
-    if (curNode.value.length <= 1) {
-      return getNextRow();
-    }
-  }
-  //Using splitOrder
-  else if (curStep < splitOrder.length) {
-    curNode = splitTree.find(splitOrder[curStep]);
-    val = curNode.value;
-
-    feedbackText(curNode.key,"Splitting");//Updating msg div to notify user a split is occurring
-    animateSplit(curNode);//Animates the splitting arrays action
-
-  } else {
-    console.log("Error. Algorithm complete, no more steps");
-    return;
-  }
-
-  $(`#arr-row-${curNode.key}`).html(formatRow(val, curNode.key));
-  updateColour(curNode.key);
-
-  // Remove focus from the next button
-  $("#next-btn").blur();
-}
-
-function getPrevRow() {
-  let curNode, val;
-
-  if (curStep == 0) {
-    $("#prev-btn").blur();
-    return;
-  }
-
-  //Using mergeOrder
-  if (
-    curStep >= splitOrder.length &&
-    curStep < splitOrder.length + mergeOrder.length
-  ) {
-    curNode = splitTree.find(mergeOrder[curStep - mergeOrder.length]);
-    val = formatRow(curNode.value, curNode.key);
-
-    feedbackText(curNode.key,"Merging");
-    
-
-    if (curNode.value.length <= 1) {
-      curStep--;
-      return getPrevRow();
-    }
-  }
-  //Using splitOrder
-  else if (curStep < splitOrder.length) {
-    curNode = splitTree.find(splitOrder[curStep]);
-    val = "";
-    //Updating msg div to notify user a split is occurring
-    feedbackText(curNode.key,"Splitting")
-  } else {
-    console.log("Error. Algorithm complete, no more steps");
-    return;
-  }
-
-  $(`#arr-row-${curNode.key}`).html(val);
-  curStep--;
-  $("#prev-btn").blur();
-}
-
-// Formats the displayed rows accordingly (move from index but put in game index)
-function formatRow(arr, key) {
-  let n;
-  let html = ``;
-
-  if (arr.length == 1) {
-    html += `<div class="arr arr-single" id="arr-box-${key}-${0}"exp-val=${
-      arr[0]
-    }><div class="num-slot">${arr[0]}</div></div>`;
-  } else {
-    for (var i = 0; i < arr.length; i++) {
-      n = arr[i];
-      if (i == 0) {
-        html += `<div class="arr arr-start" id="arr-box-${key}-${i}"exp-val=${n}><div class="num-slot">${n}</div></div>`;
-      } else if (i + 1 == arr.length) {
-        html += `<div class="arr arr-end" id="arr-box-${key}-${i}" exp-val=${n}><div class="num-slot">${n}</div></div>`;
-      } else {
-        html += `<div class="arr" id="arr-box-${key}-${i}" exp-val=${n}><div class="num-slot">${n}</div></div>`;
-      }
-    }
-  }
-
-  return html;
-}
-
-// Gets an empty 2D array
-function getEmptyArr(size) {
-  let arr = [];
-  for (i = 0; i < size; i++) {
-    arr.push([]);
-  }
-  return arr;
-}
-
-function confirmQuit() {
-  //creates a confirmation box
-  let confirmAction = confirm("Are you sure you want to quit the game?"); //asks the user if they're sure they want to quit
-  if (confirmAction) {
-    //if they click the yes button this returns true and redirects them to the home page
-    window.location = "/";
-  } //if the user clicks cancel they get a message to continue the game
-  else {
-    alert("Continue Game!");
-  }
-}
-
 function animateSplit(node) {
   // If the current node is a to the left of its parent animate going left, else animate going right
   if (node.key === 0) {
     document.documentElement.style.setProperty("--animation-translatex", "0%");
   } else if (splitTree.find(node.parent.key).left.key != node.key) {
-    document.documentElement.style.setProperty("--animation-translatex","-50%");
+    document.documentElement.style.setProperty(
+      "--animation-translatex",
+      "-50%"
+    );
   } else {
     document.documentElement.style.setProperty("--animation-translatex", "50%");
   }
 }
 
-function feedbackText(key,dir) {
+function feedbackText(key, dir) {
   $("#msg").text(
-    key==0 ?
-    "Algorithm Complete!"
-    :
-    "[" + dir + "] @ Tree Row: " +
-      (Number(key.slice(0, 1)) + 1) +
-      ", Tree Node: " +
-      (Number(key.slice(2, 3)) + 1)
+    key == 0
+      ? "Algorithm Complete!"
+      : "[" +
+          dir +
+          "] @ Tree Row: " +
+          (Number(key.slice(0, 1)) + 1) +
+          ", Tree Node: " +
+          (Number(key.slice(2, 3)) + 1)
   );
 }
 
@@ -228,5 +195,7 @@ function updateColour(val) {
   el.css("background-color", "lime");
 
   //timer set to keep element green for 1sec
-  setTimeout(() => { el.css("background-color", "");}, 1000);
+  setTimeout(() => {
+    el.css("background-color", "");
+  }, 1000);
 }
