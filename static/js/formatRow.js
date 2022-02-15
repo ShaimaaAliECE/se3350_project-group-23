@@ -30,9 +30,9 @@ function formatEmptyRow(arr, key) {
 
   if (arr.length == 1) {
     html += `<div class="arr arr-single" onDrop="handleDrop(event)" onDragOver="allowDrop(event)" id="arr-box-${key}-${0}"exp-val=${
-      arr[0]
-    }><div class="num-slot" draggable="true">${arr[0]}</div></div>`;
-  } else {
+    arr[0]}><div class="num-slot" draggable="true"></div></div>`;
+  } 
+  else {
     for (var i = 0; i < arr.length; i++) {
       n = arr[i];
       if (i == 0) {
