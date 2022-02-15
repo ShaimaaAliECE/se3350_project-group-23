@@ -9,14 +9,16 @@ function allowDrop(ev) {
 }
 
 function handleDrag(ev) {
-  ev.originalEvent.dataTransfer.setData("text", ev.target.id);
+  console.log(ev);
+  ev.dataTransfer.setData("text", ev.target.id);
 }
 
 function handleDrop(ev) {
+  console.log("Handle");
   // ev.target is the element that the number was dropped into
   if (ev.target.innerHTML == "") {
     ev.preventDefault();
-    var data = ev.originalEvent.dataTransfer.getData("text");
+    var data = ev.dataTransfer.getData("text");
 
     ev.target.appendChild(document.getElementById(data));
     setPosVis(ev.target.id);

@@ -1,14 +1,15 @@
 extends index.pug
 block scripts 
-    script(type="text/javascript" src="/js/merge_sort_index.js")
     script(type="text/javascript" src="/js/BinaryTree.js")
     script(type="text/javascript" src="/js/mergeSort.js")
-    script(type="text/javascript" src="/js/dragDrop.js")
     case algLvl
         when "1"
+            script(type="text/javascript" src="/js/merge_sort_lvl1.js")
             script(type="text/javascript" src="/js/formatLvl1Row.js")
         default
             script(type="text/javascript" src="/js/formatRow.js")
+            script(type="text/javascript" src="/js/merge_sort_lvl2.js")
+            script(type="text/javascript" defer src="/js/dragDrop.js")
             
             
             
@@ -27,17 +28,32 @@ block scripts
 
 
 block content 
-    //-- needs to change to accomadate lvl 5
-    div#gameboard(style="width: 100%; display: flex; flex-direction: column")
-        div.arr-holder(style="order: -1") 
-            div.arr-row(style="width: 30%")
-                button.btn.btn-secondary(onclick="confirmQuit()")= "Quit"
-            div.arr-row(style=`height: 75px; width: 40%`)
-                div#msg
-            div.arr-row(style="width: 30%")
-                div.btn-group
-                    button.btn.btn-secondary#prev-btn(onclick="getPrevRow()")
-                        i.fas.fa-arrow-left 
-                    button.btn.btn-secondary#next-btn(onclick="getNextRow()")
-                        i.fas.fa-arrow-right
+    case algLvl
+        when "1"
+            div#gameboard(style="width: 100%; display: flex; flex-direction: column")
+                div.arr-holder(style="order: -1") 
+                    div.arr-row(style="width: 30%")
+                        button.btn.btn-secondary(onclick="confirmQuit()")= "Quit"
+                    div.arr-row(style=`height: 75px; width: 40%`)
+                        div#msg
+                    div.arr-row(style="width: 30%")
+                        div.btn-group
+                            button.btn.btn-secondary#prev-btn(onclick="getPrevRow()")
+                                i.fas.fa-arrow-left 
+                            button.btn.btn-secondary#next-btn(onclick="getNextRow()")
+                                i.fas.fa-arrow-right
+        default
+            div#gameboard(style="width: 100%; display: flex; flex-direction: column")
+                div.arr-holder(style="order: -1") 
+                    div.arr-row(style="width: 30%")
+                        button.btn.btn-secondary(onclick="confirmQuit()")= "Quit"
+                    div.arr-row(style=`height: 75px; width: 40%`)
+                        div#msg
+                    div.arr-row(style="width: 30%")
+                        div.btn-group
+                            button.btn.btn-secondary#prev-btn(onclick="getPrevRow()")
+                                i.fas.fa-arrow-left 
+                            button.btn.btn-secondary#next-btn(onclick="getNextRow()")
+                                i.fas.fa-arrow-right
+        
                 
