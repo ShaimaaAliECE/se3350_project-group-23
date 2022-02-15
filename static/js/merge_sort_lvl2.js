@@ -4,6 +4,8 @@ let splitTree;
 let mergeOrder = [];
 let curStep = 0;
 const boxSize = 45; // size of a single box within a display array (px)
+let nextArr = [];
+let curNumIndex = 0;
 
 // On start button click, remove start btn and get the random array from the server, and call sorter fn
 $(() => {
@@ -61,6 +63,7 @@ function getNextRow() {
   //Using splitOrder
   else if (curStep < splitOrder.length) {
     curNode = splitTree.find(splitOrder[curStep]);
+    nextArr = curNode.value;
     val = curNode.value;
 
     feedbackText(curNode.key, "Splitting"); //Updating msg div to notify user a split is occurring

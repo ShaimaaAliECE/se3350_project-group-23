@@ -9,37 +9,49 @@ function allowDrop(ev) {
 }
 
 function handleDrag(ev) {
-  console.log(ev);
   ev.dataTransfer.setData("text", ev.target.id);
 }
 
 function handleDrop(ev) {
-  console.log("Handle");
   // ev.target is the element that the number was dropped into
   if (ev.target.innerHTML == "") {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
 
-    ev.target.appendChild(document.getElementById(data));
-    setPosVis(ev.target.id);
+    console.log(nextArr);
+    console.log(Number($(`#${data}`).html()));
 
-    if (ev.target.id == "master9") {
-      //not real just to test
-      playWinAudio();
-      stopTimer();
+    // If the next number in the array is equal to the number we are dropping in, add it to the box
+    if (nextArr[curNumIndex] === Number($(`#${data}`).html())) {
+      curNumIndex++;
+      ev.target.appendChild(document.getElementById(data));
 
-      openWinModal();
-    } else {
-      playPosAudio();
-    }
-  } else {
-    if (ev.target.id.substring(0, 3) == "num") {
-      //console.log(ev.target.parentElement.id);
-      setNegVis(ev.target.parentElement.id);
-    } else {
-      setNegVis(ev.target.id);
+      // DISPLAY NEXT EMPTY ROW???
+      if (curNumIndex === nextArr.length) {
+        curNumIndex = 0;
+        getNextRow();
+      }
     }
 
-    incMistake();
+    //setPosVis(ev.target.id);
+
+    //     if (ev.target.id == "master9") {
+    //       //not real just to test
+    //       playWinAudio();
+    //       stopTimer();
+
+    //       openWinModal();
+    //     } else {
+    //       //playPosAudio();
+    //     }
+    //   } else {
+    //     if (ev.target.id.substring(0, 3) == "num") {
+    //       //console.log(ev.target.parentElement.id);
+    //       //setNegVis(ev.target.parentElement.id);
+    //     } else {
+    //       //setNegVis(ev.target.id);
+    //     }
+
+    //incMistake();
   }
 }
