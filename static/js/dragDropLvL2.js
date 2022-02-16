@@ -17,14 +17,15 @@ function handleDrop(ev) {
   if (ev.target.innerHTML == "") {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    let boxID = ev.target.parentElement.id;
+    let boxID = ev.target.id;
     let boxIDindex = boxID.slice(boxID.length - 1);
 
     console.log(nextArr);
+    console.log(curNumIndex);
     console.log("Expected val: " + nextArr[curNumIndex]);
     console.log("Detected val: " + Number($(`#${data}`).html()));
     console.log(boxID);
-    console.log(boxID.slice(boxID.length - 1));
+    // console.log(boxID.slice(boxID.length - 1));
     //console.log(ev.target.children);
 
     // If the next number in the array is equal to the number we are dropping in, add it to the box
@@ -41,7 +42,7 @@ function handleDrop(ev) {
       //console.log(ev.target.parentElement.id);
       setPosVis(boxID);
 
-      // DISPLAY NEXT EMPTY ROW???
+      // DISPLAY NEXT EMPTY ROW
       if (curNumIndex === nextArr.length) {
         curNumIndex = 0;
         getNextRow();

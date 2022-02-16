@@ -43,7 +43,6 @@ function getNextRow() {
   // Increment current step
   curStep++;
   console.log("Step: " + curStep);
-  console.log(splitOrder);
 
   //Using mergeOrder
   if (
@@ -63,6 +62,7 @@ function getNextRow() {
   //Using splitOrder
   else if (curStep < splitOrder.length) {
     curNode = splitTree.find(splitOrder[curStep]);
+    console.log(curNode);
     nextArr = curNode.value;
     val = curNode.value;
 
