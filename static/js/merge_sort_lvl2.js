@@ -53,11 +53,11 @@ function getNextRow() {
     nextArr = curNode.getSortedValue;
     val = curNode.getSortedValue;
 
-    feedbackText(curNode.key, "Merging"); //Updating msg div to notify the merge
-
     if (curNode.value.length <= 1) {
       return getNextRow();
     }
+
+    feedbackText(curNode.key, "Merging"); //Updating msg div to notify the merge
   }
   //Using splitOrder
   else if (curStep < splitOrder.length) {
@@ -68,7 +68,7 @@ function getNextRow() {
 
     feedbackText(curNode.key, "Splitting"); //Updating msg div to notify user a split is occurring
   } else {
-    console.log("Error. Algorithm complete, no more steps");
+    $("#msg").text("Algorithm Complete!");
     return;
   }
 
@@ -169,16 +169,27 @@ function fillGameBoard(startArray, maxDepth) {
 }
 
 function feedbackText(key, dir) {
-  $("#msg").text(
-    key == 0
-      ? "Algorithm Complete!"
-      : "[" +
-          dir +
-          "] @ Tree Row: " +
-          (Number(key.slice(0, 1)) + 1) +
-          ", Tree Node: " +
-          (Number(key.slice(2, 3)) + 1)
-  );
+  if (dir === "Merging") {
+    console.log(splitTree.find(key));
+    left = splitTree.find(key).left;
+    right = splitTree.find(key).right;
+    console.log(left);
+    console.log(right);
+
+    $("#msg").text(
+      `Merging from: Row ${
+        key === 0 ? 1 : Number(key.slice(0, 1)) + 2
+      }, Nodes ${Number(left.key.slice(2, 3)) + 1} & ${
+        Number(right.key.slice(2, 3)) + 1
+      } (Place numbers in order from lowest to highest)`
+    );
+  } else if (dir === "Splitting") {
+    $("#msg").text(
+      `Splitting into: Row ${Number(key.slice(0, 1)) + 1}, Node ${
+        Number(key.slice(2, 3)) + 1
+      } (Place numbers in order from left to right)`
+    );
+  }
 }
 
 function updateColour(val) {
