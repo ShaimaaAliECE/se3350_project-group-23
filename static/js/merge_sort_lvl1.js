@@ -29,6 +29,8 @@ function sorter(origArr) {
 
   // Creates tree for the merging steps
   mergeOrder = [...splitTree.postOrderTraversal()].map((n) => n.key);
+  //disabling the next level button
+  document.getElementById('nextLvl-btn').disabled = true;
 }
 
 // Gets the next step in the sorting algorithm
@@ -61,6 +63,8 @@ function getNextRow() {
     animateSplit(curNode); //Animates the splitting arrays action
   } else {
     console.log("Error. Algorithm complete, no more steps");
+    //making the next level button appear only when the algorithm is complete
+    document.getElementById('nextLvl-btn').disabled = false;
     return;
   }
 
@@ -198,4 +202,9 @@ function updateColour(val) {
   setTimeout(() => {
     el.css("background-color", "");
   }, 1000);
+}
+
+function nextLevel(){
+  //redirecting user to the next level
+  window.location = "/merge_sort/2";
 }

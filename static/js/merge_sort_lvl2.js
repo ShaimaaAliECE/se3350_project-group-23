@@ -34,6 +34,8 @@ function sorter(origArr) {
 
   $(`#arr-row-0`).html(formatRow(origArr, 0));
   getNextRow();
+  //disabling the next level button
+  document.getElementById('nextLvl-btn').disabled = true;
 }
 
 // Gets the next step in the sorting algorithm
@@ -69,6 +71,8 @@ function getNextRow() {
     feedbackText(curNode.key, "Splitting"); //Updating msg div to notify user a split is occurring
   } else {
     $("#msg").text("Algorithm Complete!");
+    //enabling the next level button only when the algorithm is completed
+    document.getElementById('nextLvl-btn').disabled = false;
     return;
   }
 
@@ -127,6 +131,11 @@ function confirmQuit() {
   else {
     alert("Continue Game!");
   }
+}
+
+function nextLevel(){
+  //redirecting the user to the next level 
+  window.location = "/merge_sort/3";
 }
 
 function fillGameBoard(startArray, maxDepth) {

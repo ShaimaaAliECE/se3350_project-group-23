@@ -34,6 +34,8 @@ function sorter(origArr) {
 
   $(`#arr-row-0`).html(formatRow(origArr, 0));
   getNextRow();
+  //disabling the next level button
+  document.getElementById('nextLvl-btn').disabled = true;
 }
 
 // Gets the next step in the sorting algorithm

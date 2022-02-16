@@ -16,7 +16,7 @@ $(() => {
     // ev.target is the element that the number was dropped into
     if (ev.target.innerHTML == "") {
       ev.preventDefault();      
-      let boxID = ev.target.parentElement.id;
+      let boxID = ev.target.id;
       let boxIDindex = boxID.slice(boxID.length - 1);
 
       var data = ev.dataTransfer.getData("text");
