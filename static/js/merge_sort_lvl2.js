@@ -50,8 +50,8 @@ function getNextRow() {
     curStep >= splitOrder.length &&
     curStep < splitOrder.length + mergeOrder.length
   ) {
-    console.log(curNode);
     curNode = splitTree.find(mergeOrder[curStep - mergeOrder.length]);
+    nextArr = curNode.getSortedValue;
     val = curNode.getSortedValue;
 
     feedbackText(curNode.key, "Merging"); //Updating msg div to notify the merge
