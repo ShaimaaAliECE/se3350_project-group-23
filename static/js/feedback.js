@@ -1,17 +1,9 @@
 
-/* Visual */
+/* Visual Feedback*/
 function setPosVis(id) {
-    //let el = $(`#arr-row-${id}`).children();
+    //sets background of box to green
     let el = $(`#${id}`);
     el.css('background-color', "lightgreen");
-    //setTimeout("revertVis(" + id + ")", 1000);
-    //console.log(id);
-
-    //let el = $(`#arr-row-${id}`).children();
-
-    //sets intial element colour to green
-    //el.css("background-color", "lightgreen");
-
     //timer set to keep element green for 1sec
     setTimeout(() => {
         el.css("background-color", "");
@@ -19,9 +11,9 @@ function setPosVis(id) {
 }
 
 function setNegVis(id) {
+    //sets background of box to red
     let el = $(`#${id}`);
     el.css('background-color', "red");
-
     //timer set to keep element red for 1sec
     setTimeout(() => {
         el.css("background-color", "");

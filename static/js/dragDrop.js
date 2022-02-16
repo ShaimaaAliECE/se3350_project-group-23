@@ -18,14 +18,22 @@ function handleDrop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     let boxID = ev.target.parentElement.id
+    let boxIDindex = boxID.slice(boxID.length -1);
 
     console.log(nextArr);
+    console.log(nextArr[curNumIndex]);
     console.log(Number($(`#${data}`).html()));
+    console.log(curNumIndex);
+    console.log(boxID);
+    console.log(boxID.slice(boxID.length - 1));
+    //console.log(ev.target.children);
+    
 
     // If the next number in the array is equal to the number we are dropping in, add it to the box
-    if (nextArr[curNumIndex] === Number($(`#${data}`).html())) {
+    //last digit of the targeted box id must also be equal to the array index (ensures element dropped in correct box)
+    if (nextArr[curNumIndex] === Number($(`#${data}`).html()) && boxIDindex == curNumIndex) {
       curNumIndex++;
-      console.log(curNumIndex);
+      //console.log(curNumIndex);
       ev.target.appendChild(document.getElementById(data));
       
       //console.log(ev.target);
