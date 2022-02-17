@@ -65,8 +65,11 @@ function getNextRow() {
     console.log(curNode);
     nextArr = curNode.value;
     val = curNode.value;
-  } else {
+  } else 
+  //Level Complete
+  {
     $("#msg").text("Algorithm Complete!");
+    playWinAudio();
     return;
   }
 

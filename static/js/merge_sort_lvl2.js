@@ -69,8 +69,11 @@ function getNextRow() {
     val = curNode.value;
 
     feedbackText(curNode.key, "Splitting"); //Updating msg div to notify user a split is occurring
-  } else {
+  } else 
+  //Level Complete
+  {
     $("#msg").text("Algorithm Complete!");
+    playWinAudio();
     //enabling the next level button only when the algorithm is completed
     document.getElementById('nextLvl-btn').disabled = false;
     return;
