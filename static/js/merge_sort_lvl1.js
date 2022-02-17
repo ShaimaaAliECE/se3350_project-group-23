@@ -57,6 +57,7 @@ function getNextRow() {
     {
       //Disable the next button 
       document.getElementById('next-btn').disabled = true;
+      document.getElementById('nextLvl-btn').disabled = false;
     }
 
     feedbackText(curNode.key, "Merging"); //Updating msg div to notify the merge
@@ -75,7 +76,7 @@ function getNextRow() {
   } else {
     console.log("Error. Algorithm complete, no more steps");
     //making the next level button appear only when the algorithm is complete
-    document.getElementById('nextLvl-btn').disabled = false;
+    
     return;
   }
 
