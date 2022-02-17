@@ -23,3 +23,6 @@ function setNegVis(id) {
 function revertVis(id) {
     $(`#${id}`).css('background-color', "");
 }
+
+//Audio feedback
+function ()
