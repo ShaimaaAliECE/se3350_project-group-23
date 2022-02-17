@@ -19,7 +19,9 @@ function handleDrop(ev) {
     var data = ev.dataTransfer.getData("text");
     let boxID = ev.target.id;
     let boxArray = boxID.split("-");
-    let boxIDindex = boxArray[4];
+    let boxIDindex = boxArray[boxArray.length-1];
+    
+
     
 
     console.log(nextArr);
