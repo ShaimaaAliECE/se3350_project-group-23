@@ -65,6 +65,8 @@ function getNextRow() {
     console.log(curNode);
     nextArr = curNode.value;
     val = curNode.value;
+
+  $('#msg').text('Please sort from left to right');
   } else 
   //Level Complete
   {
