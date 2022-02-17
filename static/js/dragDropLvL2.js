@@ -33,7 +33,9 @@ function handleDrop(ev) {
     if (
       nextArr[curNumIndex] === Number($(`#${data}`).html()) &&
       boxIDindex == curNumIndex
-    ) {
+    ) 
+    //Move is right
+    {
       curNumIndex++;
       //console.log(curNumIndex);
       ev.target.appendChild(document.getElementById(data));
@@ -41,14 +43,17 @@ function handleDrop(ev) {
       //console.log(ev.target);
       //console.log(ev.target.parentElement.id);
       setPosVis(boxID);
+      playRightMoveAudio();
 
       // DISPLAY NEXT EMPTY ROW
       if (curNumIndex === nextArr.length) {
         curNumIndex = 0;
         getNextRow();
       }
-    } else setNegVis(boxID);
-
+    } else {
+      setNegVis(boxID);
+      playWrongMoveAudio();
+    }
     //setPosVis(ev.target.id);
 
     //     if (ev.target.id == "master9") {
