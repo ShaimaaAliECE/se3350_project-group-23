@@ -182,3 +182,8 @@ function updateColour(val) {
     el.css("background-color", "");
   }, 1000);
 }
+
+//Return home screen
+function returnHome(){
+  window.location = '/'
+}

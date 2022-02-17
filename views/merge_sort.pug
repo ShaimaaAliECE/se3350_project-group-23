@@ -51,6 +51,16 @@ block content
                                 i.fas.fa-arrow-right  
                         div.arr-row(style="width: 30%")
                         button.btn.btn-secondary#nextLvl-btn(onclick="nextLevel()")= "Next Level"      
+        when '3'
+            div#gameboard(style="width: 100%; display: flex; flex-direction: column")
+                div.arr-holder(style="order: -1") 
+                    div.arr-row(style="width: 30%")
+                        button.btn.btn-secondary(onclick="confirmQuit()")= "Quit"
+                    div.arr-row(style=`height: 75px; width: 40%`)
+                        b
+                            div#msg
+                    div.arr-row(style="width: 30%")
+                        button.btn.btn-secondary#nextLvl-btn(onclick="nextLevel()")= "Complete Game" 
         default
             div#gameboard(style="width: 100%; display: flex; flex-direction: column")
                 div.arr-holder(style="order: -1") 
