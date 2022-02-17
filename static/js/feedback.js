@@ -3,7 +3,7 @@
 function setPosVis(id) {
     //sets background of box to green
     let el = $(`#${id}`);
-    el.css('background-color', "lightgreen");
+    el.css('background-color', "lime");
     //timer set to keep element green for 1sec
     setTimeout(() => {
         el.css("background-color", "");
