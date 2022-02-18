@@ -9,40 +9,29 @@ function allowDrop(ev) {
 }
 
 function handleDrag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
+  ev.dataTransfer.setData("text", ev.currentTarget.id);
+  console.log(ev.currentTarget);
 }
 
 function handleDrop(ev) {
   // ev.target is the element that the number was dropped into
-  if (ev.target.innerHTML == "") {
+  if (ev.currentTarget.innerHTML == "") {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    let boxID = ev.target.id;
+    let boxID = ev.currentTarget.id;
     let boxArray = boxID.split("-");
-    let boxIDindex = boxArray[boxArray.length-1];
-    
-
-    
-
-    console.log(nextArr);
-    console.log(curNumIndex);
-    console.log("Expected val: " + nextArr[curNumIndex]);
-    console.log("Detected val: " + Number($(`#${data}`).html()));
-    console.log(boxID);
-    // console.log(boxID.slice(boxID.length - 1));
-    //console.log(ev.target.children);
+    let boxIDindex = boxArray[boxArray.length - 1];
 
     // If the next number in the array is equal to the number we are dropping in, add it to the box
     //last digit of the targeted box id must also be equal to the array index (ensures element dropped in correct box)
     if (
       nextArr[curNumIndex] === Number($(`#${data}`).html()) &&
       boxIDindex == curNumIndex
-    ) 
-    //Move is right
-    {
+    ) {
+      //Move is right
       curNumIndex++;
       //console.log(curNumIndex);
-      ev.target.appendChild(document.getElementById(data));
+      ev.currentTarget.appendChild(document.getElementById(data));
 
       //console.log(ev.target);
       //console.log(ev.target.parentElement.id);
