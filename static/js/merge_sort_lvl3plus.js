@@ -35,7 +35,7 @@ function sorter(origArr) {
   $(`#arr-row-0`).html(formatRow(origArr, 0));
   getNextRow();
   //disabling the next level button
-  document.getElementById('nextLvl-btn').disabled = true;
+  document.getElementById("nextLvl-btn").disabled = true;
 }
 
 // Gets the next step in the sorting algorithm
@@ -66,12 +66,13 @@ function getNextRow() {
     nextArr = curNode.value;
     val = curNode.value;
 
-  $('#msg').text('Please sort from left to right');
-  } else 
+    $("#msg").text("Please sort from left to right");
+  }
   //Level Complete
-  {
+  else {
     $("#msg").text("Algorithm Complete!");
     playWinAudio();
+    document.getElementById("nextLvl-btn").disabled = false;
     return;
   }
 
@@ -184,6 +185,6 @@ function updateColour(val) {
 }
 
 //Return home screen
-function returnHome(){
-  window.location = '/'
+function returnHome() {
+  window.location = "/";
 }

@@ -35,7 +35,7 @@ function sorter(origArr) {
   $(`#arr-row-0`).html(formatRow(origArr, 0));
   getNextRow();
   //disabling the next level button
-  document.getElementById('nextLvl-btn').disabled = true;
+  document.getElementById("nextLvl-btn").disabled = true;
 }
 
 // Gets the next step in the sorting algorithm
@@ -44,7 +44,6 @@ function getNextRow() {
 
   // Increment current step
   curStep++;
-  console.log("Step: " + curStep);
 
   //Using mergeOrder
   if (
@@ -64,18 +63,17 @@ function getNextRow() {
   //Using splitOrder
   else if (curStep < splitOrder.length) {
     curNode = splitTree.find(splitOrder[curStep]);
-    console.log(curNode);
     nextArr = curNode.value;
     val = curNode.value;
 
     feedbackText(curNode.key, "Splitting"); //Updating msg div to notify user a split is occurring
-  } else 
+  }
   //Level Complete
-  {
+  else {
     $("#msg").text("Algorithm Complete!");
     playWinAudio();
     //enabling the next level button only when the algorithm is completed
-    document.getElementById('nextLvl-btn').disabled = false;
+    document.getElementById("nextLvl-btn").disabled = false;
     return;
   }
 
@@ -136,8 +134,8 @@ function confirmQuit() {
   }
 }
 
-function nextLevel(){
-  //redirecting the user to the next level 
+function nextLevel() {
+  //redirecting the user to the next level
   window.location = "/merge_sort/3";
 }
 

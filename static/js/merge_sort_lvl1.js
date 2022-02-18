@@ -29,12 +29,12 @@ function sorter(origArr) {
 
   // Creates tree for the merging steps
   mergeOrder = [...splitTree.postOrderTraversal()].map((n) => n.key);
-  
-  //disabling the next level button
-  document.getElementById('nextLvl-btn').disabled = true;
 
-  //Disabling the previous step button 
-  document.getElementById('prev-btn').disabled = true;
+  //disabling the next level button
+  document.getElementById("nextLvl-btn").disabled = true;
+
+  //Disabling the previous step button
+  document.getElementById("prev-btn").disabled = true;
 }
 
 // Gets the next step in the sorting algorithm
@@ -53,11 +53,10 @@ function getNextRow() {
     val = curNode.getSortedValue;
 
     //During merge, if node key is 0 (mergeSort is done)
-    if(curNode.key == 0)
-    {
-      //Disable the next button 
-      document.getElementById('next-btn').disabled = true;
-      document.getElementById('nextLvl-btn').disabled = false;
+    if (curNode.key == 0) {
+      //Disable the next button
+      document.getElementById("next-btn").disabled = true;
+      document.getElementById("nextLvl-btn").disabled = false;
     }
 
     feedbackText(curNode.key, "Merging"); //Updating msg div to notify the merge
@@ -76,7 +75,7 @@ function getNextRow() {
   } else {
     console.log("Error. Algorithm complete, no more steps");
     //making the next level button appear only when the algorithm is complete
-    
+
     return;
   }
 
@@ -86,9 +85,8 @@ function getNextRow() {
   // Remove focus from the next button
   $("#next-btn").blur();
 
-  if (document.getElementById('prev-btn').disabled = true)
-  {
-    document.getElementById('prev-btn').disabled = false;
+  if ((document.getElementById("prev-btn").disabled = true)) {
+    document.getElementById("prev-btn").disabled = false;
   }
 }
 
@@ -110,6 +108,11 @@ function getPrevRow() {
 
     feedbackText(curNode.key, "Merging");
 
+    if (curNode.key === 0) {
+      document.getElementById("next-btn").disabled = false;
+      document.getElementById("nextLvl-btn").disabled = true;
+    }
+
     if (curNode.value.length <= 1) {
       curStep--;
       return getPrevRow();
@@ -121,12 +124,11 @@ function getPrevRow() {
     val = "";
 
     //If the current node key is '1-0' (on first row)
-    if (curNode.key == '1-0') 
-    {
+    if (curNode.key == "1-0") {
       //Disable the prev step button since user is now at start
-      document.getElementById('prev-btn').disabled = true;
+      document.getElementById("prev-btn").disabled = true;
     }
-    
+
     //Updating msg div to notify user a split is occurring
     feedbackText(curNode.key, "Splitting");
   } else {
@@ -229,7 +231,7 @@ function updateColour(val) {
   }, 1000);
 }
 
-function nextLevel(){
+function nextLevel() {
   //redirecting user to the next level
   window.location = "/merge_sort/2";
 }
