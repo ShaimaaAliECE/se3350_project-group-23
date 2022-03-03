@@ -1,4 +1,7 @@
-$(() => {
+console.log('1', Date.now());
+
+window.addEventListener("load", () => {
+  console.log('2', Date.now());
   $(".arr").on("drop", handleDrop);
   $(".arr").on("dragover", allowDrop);
   $(".num-slot").on("dragstart", handleDrag);
