@@ -2,7 +2,10 @@
 let splitOrder = [];
 let splitTree;
 let mergeOrder = [];
-let curStep = 0;
+let merging = false;
+let splitStep = 0;
+let mergeStep = 0;
+let mergeSubStep = 0;
 const boxSize = 45; // size of a single box within a display array (px)
 
 // On start button click, remove start btn and get the random array from the server, and call sorter fn
@@ -39,21 +42,33 @@ function sorter(origArr) {
 
 // Gets the next step in the sorting algorithm
 function getNextRow() {
-  let curNode, val;
+  let curNode;
+  let val = [];
 
-  // Increment current step
-  curStep++;
+  function addEmptySpaces(length) {
+    for (let i = 0; i < length; i++) {
+      val.push("");
+    }
+  }
 
   //Using mergeOrder
-  if (
-    curStep >= splitOrder.length &&
-    curStep < splitOrder.length + mergeOrder.length
-  ) {
-    curNode = splitTree.find(mergeOrder[curStep - mergeOrder.length]);
-    val = curNode.getSortedValue;
+  if (merging) {
+    mergeSubStep++;
+
+    curNode = splitTree.find(mergeOrder[mergeStep]);
+
+    val = curNode.getSortedValue.slice(0, mergeSubStep);
+    let emptySlots = curNode.value.length - val.length;
+
+    addEmptySpaces(emptySlots);
+
+    if (mergeSubStep === curNode.value.length) {
+      mergeSubStep = 0;
+      mergeStep++;
+    }
 
     //During merge, if node key is 0 (mergeSort is done)
-    if (curNode.key == 0) {
+    if (mergeStep >= mergeOrder.length) {
       //Disable the next button
       document.getElementById("next-btn").disabled = true;
       document.getElementById("nextLvl-btn").disabled = false;
@@ -61,22 +76,27 @@ function getNextRow() {
 
     feedbackText(curNode.key, "Merging"); //Updating msg div to notify the merge
 
+    // If the current node is a single number, go to next step
     if (curNode.value.length <= 1) {
+      //mergeStep++;
+      mergeSubStep = 0;
+      //val = [];
+      //console.log(curNode.value.length);
+      //addEmptySpaces(curNode.value.length);
       return getNextRow();
     }
   }
   //Using splitOrder
-  else if (curStep < splitOrder.length) {
-    curNode = splitTree.find(splitOrder[curStep]);
+  else {
+    // Increment current step
+    splitStep++;
+    if (splitStep === splitOrder.length - 1) merging = true;
+
+    curNode = splitTree.find(splitOrder[splitStep]);
     val = curNode.value;
 
     feedbackText(curNode.key, "Splitting"); //Updating msg div to notify user a split is occurring
     animateSplit(curNode); //Animates the splitting arrays action
-  } else {
-    console.log("Error. Algorithm complete, no more steps");
-    //making the next level button appear only when the algorithm is complete
-
-    return;
   }
 
   $(`#arr-row-${curNode.key}`).html(formatRow(val, curNode.key));
