@@ -55,8 +55,9 @@ function timerCycle() {
         }
 
         //300 seconds = 5 minutes
+        //Timeout
         if (timeout == 300) {
-            sendHome();
+            timeoutHanle();
         }
 
 
@@ -69,6 +70,13 @@ function timerCycle() {
         // setTimeout("timerCycle()", 1000);
         setTimeout("timerCycle()", 1000);
     }
+}
+
+//Timeout handling
+function timeoutHandle(){
+    //Updates modal message
+    $('#modalMsg').text('Session Timeout - 5 minutes of inactivity.');
+    $('#loss-modal').modal('show');
 }
 
 // Resets the timer display to 00:00:00 DONT NEED
