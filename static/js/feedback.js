@@ -1,5 +1,22 @@
+/*
+    Counter Logic
+*/
+
 //counter to track mistakes
 let counter = 0; 
+
+//Increment counter
+function incrementCounter(){
+    counter ++; //Increase counter variable by 1
+}
+
+function decrementCounter(){
+    counter --; //Decrease counter variable by 1
+}
+
+function getCounter(){
+    return counter;
+}
 
 /* Visual Feedback*/
 function setPosVis(id) {
@@ -26,7 +43,7 @@ function revertVis(id) {
     $(`#${id}`).css('background-color', "");
 }
 
-//if 3 mistakes have been made, show the window 
+//if 3 mistakes have been made, show the loss window 
 function checkIncorrect(num) {
     if (num >= 3)
     {
@@ -34,7 +51,10 @@ function checkIncorrect(num) {
     }
 } 
 
-
+//shows the pop up window 
+function openWindow() {
+    $('#loss-modal').modal('show');
+}
 
 /* Audio Feedback */ 
 
