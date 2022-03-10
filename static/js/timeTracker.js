@@ -63,7 +63,7 @@ function timerCycle() {
         // Updates the timer display
         $('#timer').html(getFormattedTime());
 
-        console.log(timeout);
+        //console.log(timeout);
 
         // Executes the function again after 1 second
         // setTimeout("timerCycle()", 1000);
