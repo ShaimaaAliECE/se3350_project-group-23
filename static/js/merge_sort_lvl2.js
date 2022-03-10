@@ -134,11 +134,6 @@ function confirmQuit() {
   }
 }
 
-//shows the pop up window 
-function openWindow() {
-  $('#loss-modal').modal('show');
-}
-
 function nextLevel() {
   //redirecting the user to the next level
   window.location = "/merge_sort/3";
