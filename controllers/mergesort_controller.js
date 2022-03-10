@@ -7,7 +7,7 @@ const renderLvlSelect = (req, res, next) => {
     tabTitle: "MS",
     pageTitle: "Merge Sort",
     baseUrl: mergeSortUrl,
-    maxLvl: 3//5 change to 5 for 2nd release
+    maxLvl: 5//5 change to 5 for 2nd release
   });
   console.log("* Rendered Merge Sort Level Select Page: SUCCESS\n");
 };
