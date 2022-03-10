@@ -1,3 +1,5 @@
+//counter to track mistakes
+let counter = 0; 
 
 /* Visual Feedback*/
 function setPosVis(id) {
