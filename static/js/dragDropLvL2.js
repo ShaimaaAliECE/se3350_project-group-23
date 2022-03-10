@@ -1,8 +1,5 @@
 console.log('1', Date.now());
 
-//counter to track mistakes
-let counter = 0; 
-
 window.addEventListener("load", () => {
   console.log('2', Date.now());
   $(".arr").on("drop", handleDrop);
