@@ -24,6 +24,16 @@ function revertVis(id) {
     $(`#${id}`).css('background-color', "");
 }
 
+//if 3 mistakes have been made, show the window 
+function checkIncorrect(num) {
+    if (num >= 3)
+    {
+        openWindow();
+    }
+} 
+
+
+
 /* Audio Feedback */ 
 
 //Gameover

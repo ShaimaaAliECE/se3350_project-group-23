@@ -60,7 +60,29 @@ block content
                         b
                             div#msg
                     div.arr-row(style="width: 30%")
-                        button.btn.btn-secondary#nextLvl-btn(onclick="returnHome()")= "Complete Game" 
+                        button.btn.btn-secondary#nextLvl-btn(onclick="returnHome()")= "Complete Game"
+                        button.btn.btn-secondary#mistake-count 
+                            span Mistakes 
+                            span#mistake-num 0
+                            span /3
+                div.center-modal#loss-modal
+                    div.modal-dialog
+                        div.modal-content
+                            div.modal-header(style="display: block; padding-bottom: 0")
+                                h3 To Many Mistakes
+                                h5 How Would You Like To Proceed:
+                            div.modal-body(style="display: flex; flex-direction:column")
+                                button.btn.btn-primary.modal-btn#reset-btn(onclick="refreshPage()")
+                                    div Restart Level
+                                    i.fas.fa-sync
+                                button.btn.btn-primary.modal-btn(onclick='window.location.href="/merge_sort"')
+                                    div Change Level
+                                    i.fas.fa-bars
+                                button.btn.btn-danger.modal-btn(onclick='window.location.href="/"')
+                                    div Quit
+                                    i.fas.fa-times
+
+               
         default
             div#gameboard(style="width: 100%; display: flex; flex-direction: column")
                 div.arr-holder(style="order: -1") 
@@ -71,5 +93,24 @@ block content
                             div#msg
                     div.arr-row(style="width: 30%")
                         button.btn.btn-secondary#nextLvl-btn(onclick="nextLevel()")= "Next Level" 
-                   
-                
+                        button.btn.btn-secondary#mistake-count 
+                            span Mistakes 
+                            span#mistake-num 0
+                            span /3
+                div.center-modal#loss-modal
+                    div.modal-dialog
+                        div.modal-content
+                            div.modal-header(style="display: block; padding-bottom: 0")
+                                h3 To Many Mistakes
+                                h5 How Would You Like To Proceed:
+                            div.modal-body(style="display: flex; flex-direction:column")
+                                button.btn.btn-primary.modal-btn#reset-btn(onclick="refreshPage()")
+                                    div Restart Level
+                                    i.fas.fa-sync
+                                button.btn.btn-primary.modal-btn(onclick='window.location.href="/merge_sort"')
+                                    div Change Level
+                                    i.fas.fa-bars
+                                button.btn.btn-danger.modal-btn(onclick='window.location.href="/"')
+                                    div Quit
+                                    i.fas.fa-times
+

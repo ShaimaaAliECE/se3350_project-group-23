@@ -1,5 +1,8 @@
 console.log('1', Date.now());
 
+//counter to track mistakes
+let counter = 0; 
+
 window.addEventListener("load", () => {
   console.log('2', Date.now());
   $(".arr").on("drop", handleDrop);
@@ -49,26 +52,13 @@ function handleDrop(ev) {
     } else {
       setNegVis(boxID);
       playWrongMoveAudio();
+      //increment counter when a mistake is made
+      counter ++;
+      //show the updated mistake count
+      $('#mistake-num').html(counter);
+      //check if 3 mistakes have been made
+      checkIncorrect(counter);
     }
-    //setPosVis(ev.target.id);
 
-    //     if (ev.target.id == "master9") {
-    //       //not real just to test
-    //       playWinAudio();
-    //       stopTimer();
-
-    //       openWinModal();
-    //     } else {
-    //       //playPosAudio();
-    //     }
-    //   } else {
-    //     if (ev.target.id.substring(0, 3) == "num") {
-    //       //console.log(ev.target.parentElement.id);
-    //       //setNegVis(ev.target.parentElement.id);
-    //     } else {
-    //       //setNegVis(ev.target.id);
-    //     }
-
-    //incMistake();
   }
 }
