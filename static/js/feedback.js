@@ -54,8 +54,9 @@ function checkIncorrect(num) {
     }
 } 
 
-//shows the pop up window 
+//shows the loss modal for a loss 
 function openLossWindow() {
+    $('#modalMsg').text('Too Many Mistakes!');
     $('#loss-modal').modal('show');
 }
 
