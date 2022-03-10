@@ -51,10 +51,18 @@ function timerCycle() {
             }
         }
 
+        
+
         // Updates the timer display
-        $('#gametimer').html(getFormattedTime());
+        $('#timer').html(getFormattedTime());
+
+        if(min == 5)
+        {
+            sendHome();
+        }
 
         // Executes the function again after 1 second
+        // setTimeout("timerCycle()", 1000);
         setTimeout("timerCycle()", 1000);
     }
 }

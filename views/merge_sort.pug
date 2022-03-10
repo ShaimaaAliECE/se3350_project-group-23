@@ -6,16 +6,21 @@ block scripts
         when "1"
             script(type="text/javascript" src="/js/merge_sort_lvl1.js")
             script(type="text/javascript" src="/js/formatLvl1Row.js")
+            script(type="text/javascript" src="/js/timeTracker.js")
+
         when "2"
             script(type="text/javascript" src="/js/formatRow.js")
             script(type="text/javascript" src="/js/merge_sort_lvl2.js")
             script(type="text/javascript" src="/js/feedback.js")
             script(type="text/javascript" src="/js/dragDropLvL2.js")
+            script(type="text/javascript" src="/js/timeTracker.js")
+            
         default    
             script(type="text/javascript" src="/js/formatRow.js")
             script(type="text/javascript" src="/js/merge_sort_lvl3plus.js")
             script(type="text/javascript" src="/js/feedback.js")
             script(type="text/javascript" src="/js/dragDropLvL2.js")
+            script(type="text/javascript" src="/js/timeTracker.js")
             
             
             
@@ -41,6 +46,7 @@ block content
                 div.arr-holder(style="order: -1") 
                     div.arr-row(style="width: 30%")
                         button.btn.btn-secondary(onclick="confirmQuit()")= "Quit"
+                        button.btn.btn-secondary#timer(style="margin-left: 20px; cursor: default")= "00:00:00"
                     div.arr-row(style=`height: 75px; width: 40%`)
                         div#msg
                     div.arr-row(style="width: 30%")
@@ -56,6 +62,7 @@ block content
                 div.arr-holder(style="order: -1") 
                     div.arr-row(style="width: 30%")
                         button.btn.btn-secondary(onclick="confirmQuit()")= "Quit"
+                        button.btn.btn-secondary#timer(style="margin-left: 20px; cursor: default")= "00:00:00"
                     div.arr-row(style=`height: 75px; width: 40%`)
                         b
                             div#msg
@@ -88,6 +95,7 @@ block content
                 div.arr-holder(style="order: -1") 
                     div.arr-row(style="width: 30%")
                         button.btn.btn-secondary(onclick="confirmQuit()")= "Quit"
+                        button.btn.btn-secondary#timer(style="margin-left: 20px; cursor: default")= "00:00:00"
                     div.arr-row(style=`height: 75px; width: 40%`)
                         b
                             div#msg
@@ -113,4 +121,7 @@ block content
                                 button.btn.btn-danger.modal-btn(onclick='window.location.href="/"')
                                     div Quit
                                     i.fas.fa-times
+                                
+                                
+                                
 
