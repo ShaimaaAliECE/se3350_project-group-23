@@ -62,6 +62,7 @@ function getNextRow() {
 
     addEmptySpaces(emptySlots);
 
+    // If its the last substep in the row, go to next step
     if (mergeSubStep === curNode.value.length) {
       mergeSubStep = 0;
       mergeStep++;
@@ -78,11 +79,7 @@ function getNextRow() {
 
     // If the current node is a single number, go to next step
     if (curNode.value.length <= 1) {
-      //mergeStep++;
       mergeSubStep = 0;
-      //val = [];
-      //console.log(curNode.value.length);
-      //addEmptySpaces(curNode.value.length);
       return getNextRow();
     }
   }
@@ -110,21 +107,53 @@ function getNextRow() {
   }
 }
 
+// Gets the previous step in the alg
 function getPrevRow() {
-  let curNode, val;
+  let curNode;
+  let val = [];
 
-  if (curStep == 0) {
-    $("#prev-btn").blur();
-    return;
+  function addEmptySpaces(length) {
+    for (let i = 0; i < length; i++) {
+      val.push("");
+    }
   }
 
-  //Using mergeOrder
-  if (
-    curStep >= splitOrder.length &&
-    curStep < splitOrder.length + mergeOrder.length
-  ) {
-    curNode = splitTree.find(mergeOrder[curStep - mergeOrder.length]);
-    val = formatRow(curNode.value, curNode.key);
+  // Using mergeOrder
+  if (merging) {
+    mergeSubStep--;
+    curNode = splitTree.find(mergeOrder[mergeStep]);
+
+    // If there is no current node, that means that we are on the last step, so just set it to the root node
+    if (!curNode) curNode = splitTree.find(mergeOrder[mergeOrder.length - 1]);
+
+    // If we are going back to a previous row
+    if (mergeSubStep < 0) {
+      if (curNode.value.length !== 1) {
+        $(`#arr-row-${curNode.key}`).html(
+          formatRow(curNode.value, curNode.key)
+        );
+      }
+      mergeStep--;
+      curNode = splitTree.find(mergeOrder[mergeStep]);
+
+      // If no more merging steps left, set merging to false and get previous row
+      if (mergeStep <= 0) {
+        merging = false;
+        return getPrevRow();
+      }
+
+      // If the node is a single number, get the previous row because there is nothing to change
+      if (curNode.value.length <= 1) {
+        return getPrevRow();
+      }
+
+      // The merge substep will be set to the length of the previous row's array
+      mergeSubStep = curNode.value.length - 1;
+    }
+
+    val = curNode.getSortedValue.slice(0, mergeSubStep);
+    let emptySlots = curNode.value.length - val.length;
+    addEmptySpaces(emptySlots);
 
     feedbackText(curNode.key, "Merging");
 
@@ -132,16 +161,13 @@ function getPrevRow() {
       document.getElementById("next-btn").disabled = false;
       document.getElementById("nextLvl-btn").disabled = true;
     }
-
-    if (curNode.value.length <= 1) {
-      curStep--;
-      return getPrevRow();
-    }
   }
   //Using splitOrder
-  else if (curStep < splitOrder.length) {
-    curNode = splitTree.find(splitOrder[curStep]);
+  else {
+    curNode = splitTree.find(splitOrder[splitStep]);
     val = "";
+
+    splitStep--;
 
     //If the current node key is '1-0' (on first row)
     if (curNode.key == "1-0") {
@@ -151,13 +177,9 @@ function getPrevRow() {
 
     //Updating msg div to notify user a split is occurring
     feedbackText(curNode.key, "Splitting");
-  } else {
-    console.log("Error. Algorithm complete, no more steps");
-    return;
   }
 
-  $(`#arr-row-${curNode.key}`).html(val);
-  curStep--;
+  $(`#arr-row-${curNode.key}`).html(formatRow(val, curNode.key));
   $("#prev-btn").blur();
 }
 
