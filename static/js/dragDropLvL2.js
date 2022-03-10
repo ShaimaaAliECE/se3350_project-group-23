@@ -1,8 +1,5 @@
 console.log('1', Date.now());
 
-//counter to track mistakes
-let counter = 0; 
-
 window.addEventListener("load", () => {
   console.log('2', Date.now());
   $(".arr").on("drop", handleDrop);
@@ -53,11 +50,13 @@ function handleDrop(ev) {
       setNegVis(boxID);
       playWrongMoveAudio();
       //increment counter when a mistake is made
-      counter ++;
+      incrementCounter();
+      //create local variable for the counter upon this call
+      let mistakes = getCounter();
       //show the updated mistake count
-      $('#mistake-num').html(counter);
+      $('#mistake-num').html(mistakes);
       //check if 3 mistakes have been made
-      checkIncorrect(counter);
+      checkIncorrect(mistakes);
     }
 
   }

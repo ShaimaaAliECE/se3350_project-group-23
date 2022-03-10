@@ -160,3 +160,23 @@ body {
     transform: translatex(0%) translatey(0%);
   }
 }
+
+/* Loss modal*/
+.center-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1050;
+  display: none;
+  overflow: hidden;
+  outline: 0;
+}
+.modal-btn {
+  display: flex; 
+  flex-direction: row; 
+  align-items: center; 
+  width: 100%; 
+  justify-content: space-between;
+  margin: 5px 0;
+}
