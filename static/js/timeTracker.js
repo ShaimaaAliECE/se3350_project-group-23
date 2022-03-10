@@ -25,14 +25,14 @@ function startTimer() {
     if (!runtimer) {
         runtimer = true;
         // allows timer to start from 0 instead of 1
-        setTimeout("timerCycle()", 1000);        
+        setTimeout("timerCycle()", 1000);
     }
 }
 // May not need bt added for later functionality
 function stopTimer() {
-  if (runtimer) {
-    runtimer = false;
-  }
+    if (runtimer) {
+        runtimer = false;
+    }
 }
 
 // Cycles every second and increments up run timer and formats stopwatch
@@ -40,6 +40,9 @@ function timerCycle() {
     if (runtimer) {
 
         sec++;
+        timeout++;
+
+
 
         if (sec == 60) {
             min = min + 1;
@@ -51,15 +54,16 @@ function timerCycle() {
             }
         }
 
-        
+        //300 seconds = 5 minutes
+        if (timeout == 300) {
+            sendHome();
+        }
+
 
         // Updates the timer display
         $('#timer').html(getFormattedTime());
 
-        if(min == 5)
-        {
-            sendHome();
-        }
+        console.log(timeout);
 
         // Executes the function again after 1 second
         // setTimeout("timerCycle()", 1000);
@@ -100,8 +104,9 @@ function getFormattedTime() {
 
 /* Inactivity Timer Functions */
 function resetTimeoutTimer() {
-    clearTimeout(timeout);
-    timeout = setTimeout('sendHome()', 5*60*1000); //5 min
+    // clearTimeout(timeout);
+    // timeout = setTimeout('sendHome()', 5*60*1000); //5 min
+    timeout = 0;
 }
 
 function sendHome() {
