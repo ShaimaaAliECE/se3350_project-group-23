@@ -17,7 +17,8 @@ var min = 0;
 var sec = 0;
 var runtimer = false;
 
-var timeout;
+var timeout;          //Variable to hold timeout counter
+var timeoutMax = 300; //Max amount of seconds for timeout counter (300 Seconds = 5 mins)
 
 /* Run Time Timer */
 // Functions to start and stop the timer
@@ -54,10 +55,9 @@ function timerCycle() {
             }
         }
 
-        //300 seconds = 5 minutes
         //Timeout
-        if (timeout == 300) {
-            timeoutHanle();
+        if (timeout == timeoutMax) {
+            timeoutHandle();
         }
 
 
@@ -74,8 +74,13 @@ function timerCycle() {
 
 //Timeout handling
 function timeoutHandle(){
+    //Logging timeout in console
+    console.log('User timeout reached');
     //Updates modal message
     $('#modalMsg').text('Session Timeout - 5 minutes of inactivity.');
+    //Play loss sound
+    playGameOverAudio();
+    //Show loss modal
     $('#loss-modal').modal('show');
 }
 
