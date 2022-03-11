@@ -71,11 +71,12 @@ function getNextRow() {
     //During merge, if node key is 0 (mergeSort is done)
     if (mergeStep >= mergeOrder.length) {
       //Disable the next button
+      feedbackText(curNode.key, "Algorithm Complete");
       document.getElementById("next-btn").disabled = true;
       document.getElementById("nextLvl-btn").disabled = false;
+    } else {
+      feedbackText(curNode.key, "Merging"); // Updating msg div to notify the merge
     }
-
-    feedbackText(curNode.key, "Merging"); //Updating msg div to notify the merge
 
     // If the current node is a single number, go to next step
     if (curNode.value.length <= 1) {
@@ -249,16 +250,19 @@ function animateSplit(node) {
 }
 
 function feedbackText(key, dir) {
-  $("#msg").text(
-    key == 0
-      ? "Algorithm Complete!"
-      : "[" +
-          dir +
-          "] @ Tree Row: " +
-          (Number(key.slice(0, 1)) + 1) +
-          ", Tree Node: " +
-          (Number(key.slice(2, 3)) + 1)
-  );
+  // Formatting key for slicing in case it is 0
+  if (key === 0) key = "0-0";
+
+  if (dir === "Algorithm Complete") $("#msg").text(dir);
+  else
+    $("#msg").text(
+      "[" +
+        dir +
+        "] @ Tree Row: " +
+        (Number(key.slice(0, 1)) + 1) +
+        ", Tree Node: " +
+        (Number(key.slice(2, 3)) + 1)
+    );
 }
 
 function updateColour(val) {
