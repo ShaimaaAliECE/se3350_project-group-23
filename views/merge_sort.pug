@@ -86,6 +86,9 @@ block content
                                 button.btn.btn-primary.modal-btn(onclick='window.location.href="/merge_sort"')
                                     div Change Level
                                     i.fas.fa-bars
+                                button.btn.btn-primary.modal-btn(onclick='window.location.href="/"')
+                                    div Switch to a New Algorithm
+                                    i.fas.fa-times
                                 button.btn.btn-danger.modal-btn(onclick='window.location.href="/"')
                                     div Quit
                                     i.fas.fa-times
@@ -100,7 +103,7 @@ block content
                         b
                             div#msg
                     div.arr-row(style="width: 30%")
-                        button.btn.btn-secondary#nextLvl-btn(onclick="nextLevel()")= "Next Level" 
+                        button.btn.btn-secondary#nextLvl-btn(onclick="nextLevel("+algLvl+")")= "Next Level" 
                         button.btn.btn-secondary#mistake-count 
                             span Mistakes 
                             span#mistake-num 0
@@ -118,6 +121,9 @@ block content
                                 button.btn.btn-primary.modal-btn(onclick='window.location.href="/merge_sort"')
                                     div Change Level
                                     i.fas.fa-bars
+                                button.btn.btn-primary.modal-btn(onclick='window.location.href="/"')
+                                    div Switch to a New Algorithm
+                                    i.fas.fa-times
                                 button.btn.btn-danger.modal-btn(onclick='window.location.href="/"')
                                     div Quit
                                     i.fas.fa-times

@@ -188,3 +188,9 @@ function updateColour(val) {
 function returnHome() {
   window.location = "/";
 }
+
+function nextLevel(lvl) {
+  let nextlvl = lvl+1;
+  //redirecting user to the next level
+  window.location = "/merge_sort/"+nextlvl;
+}
