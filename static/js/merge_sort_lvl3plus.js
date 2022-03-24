@@ -11,7 +11,6 @@ let curNumIndex = 0;
 $(() => {
   if(window.location.pathname.split("/")[2] == 5) {
     $("header").css("position", "fixed");
-    //$(".arr-holder").css("justify-content");
     $(".default-page").css("margin-top", "var(--header-l-height)");
   }
 
