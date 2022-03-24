@@ -1,0 +1,19 @@
+extends login_index.pug
+
+block content 
+    form(class="login-form" method="POST" action="/login/verify_login")
+        div.login-item
+            label(for="studentId") Student ID:
+            input(type="text" class="form-control login" id="studentId" name="studentId")
+        div.login-item
+            label(for="usr") Username:
+            input(type="text" class="form-control login" id="usr" name="usr")
+        div.login-item
+            button(type="submit" class="btn btn-success") Login
+        div.login-item
+            a(href="/")
+                button.btn.btn-info(type="button") Continue as Guest
+        div.login-item
+            //- Set up so admin can have login from home page if they login 
+            a(class="form-text text-muted" href="/login/create_account" style="text-align:center") Create an account ?
+            a(class="form-text text-muted" href="/login/forgot_usr" style="text-align:center") Forgot/Reset username ?

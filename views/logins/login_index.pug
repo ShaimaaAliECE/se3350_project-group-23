@@ -1,0 +1,15 @@
+html
+  head
+    include ../includes/head
+    
+    block scripts
+
+    title Sorting Algs - #{tabTitle}
+  body
+
+    div(class="default-page" id="page-contents")
+      div.login-section
+        div.login-box
+          div.login-item.login-title Sorting Games
+          div.login-item.login-title= loginTitle
+          block content
