@@ -1,0 +1,23 @@
+html
+  head
+    include ../includes/head
+    
+    block scripts
+
+    title Sorting Algs - #{tabTitle}
+  body
+
+    div(class="default-page" id="page-contents")
+      div.login-section
+        div.login-box
+          div.login-item.login-title Sorting Games
+          div.login-item.login-title= loginTitle
+          form(class="login-form" method="POST" action="/admin/verify_login")
+            div.login-item
+                label(for="usr") Admin Id:
+                input(type="text" class="form-control login" id="usr" name="usr")
+            div.login-item
+                label(for="psw") Password:
+                input(type="text" class="form-control login" id="psw" name="psw")
+            div.login-item
+                button(type="submit" class="btn btn-success") Login  

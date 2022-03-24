@@ -1,0 +1,26 @@
+extends ../index.pug
+
+block content 
+    table.table
+        thead 
+            tr  
+                th Student Id 
+                th Date 
+                th Game 
+                th Level
+                th Time
+                th Mistakes 
+                th Reason 
+        tbody 
+            each log, index in logs
+                tr
+                    if log.studentId == 0
+                        th Guest
+                    else 
+                        th= log.studentId
+                    td= log.log_date 
+                    td= log.game_type
+                    td= log.game_lvl 
+                    td= log.log_time
+                    td= log.num_mistakes
+                    td= log.log_reason 
