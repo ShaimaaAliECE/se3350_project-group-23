@@ -50,7 +50,7 @@ const checkDuplicateStudentId = function(req, res, next) {
     console.log('- Checking For Duplicate ID In Table...');
     let conn = newConn();
 
-    conn.query(`SELECT COUNT(*) duplicate FROM Users WHERE studentId=` + req.body.studentId + `;`
+    conn.query(`SELECT COUNT(*) duplicate FROM users WHERE studentId=` + req.body.studentId + `;`
         ,(err,rows,fields) => {
             conn.end();
             let d = rows[0].duplicate;  
@@ -98,7 +98,7 @@ const createAccount = function(req, res, next) {
     console.log('- Creating New Account...');
 
     let conn = newConn();
-    conn.query(`INSERT INTO Users
+    conn.query(`INSERT INTO users
         VALUES (
             "` + req.body.studentId + `", 
             "` + req.body.usr + `" 
