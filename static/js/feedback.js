@@ -48,6 +48,7 @@ function checkIncorrect(num) {
     //If user makes 3 mistakes
     if (num >= 3)
     {
+        logGame('failed'); // User had to many mistakes thus reason failed
         //Opens loss modal
         openLossWindow();
         playGameOverAudio();

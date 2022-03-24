@@ -6,6 +6,7 @@ const mergeSortController = require("../controllers/mergesort_controller.js");
 
 // Middleware
 const randNumArr = require("../middleware/getRandNumArr_middleware.js");
+const maxLevel = require('../middleware/login_mw/maxLvl_middleware.js');
 
 // Returns a random array with size based on the current level
 router.post(
@@ -18,6 +19,6 @@ router.post(
 router.get("/:lvl", mergeSortController.renderMergeSortLvl);
 
 // Base route is level select
-router.get("/", mergeSortController.renderLvlSelect);
+router.get("/", maxLevel.getMaxMergeSortLevel, mergeSortController.renderLvlSelect);
 
 module.exports = router;

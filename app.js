@@ -16,14 +16,27 @@ app.use(express.static('static'));
 
 // Routes
 var mergeSortRouter = require('./routes/mergesort_routes');
+var loginRouter = require('./routes/login_routes'); 
+var adminRouter = require('./routes/admin_routes');
 
 // URLs used by routes
 app.use('/merge_sort', mergeSortRouter);
+app.use('/login', loginRouter);
+app.use('/admin', adminRouter);
 
 // Base case (Home) if no matching Route
 app.use('/', (req, res, next) => {
     console.log('-> Rendering Home Page:');
-    res.status(200).render("home", {pageTitle: "Home", tabTitle: "Home"});
+    let jsonInfo = {
+        pageTitle: "Home", 
+        tabTitle: "Home"
+    };
+
+    if(req.cookies.studentId && req.cookies.usr) {
+        jsonInfo.usr = req.cookies.usr;
+    }
+
+    res.status(200).render("home", jsonInfo);
     console.log('* Rendering Home Page Success.\n');
 });
 
