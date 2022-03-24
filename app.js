@@ -43,4 +43,4 @@ app.use(function (err, req, res, next) {
 });
 
 // Listens on port 80
-app.listen(process.env.PORT);
+app.listen(process.env.PORT || 80);
