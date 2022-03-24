@@ -4,7 +4,7 @@ const checkStudentId = function(req, res, next) {
     console.log('- Checking For Duplicate ID In Table...');
     let conn = newConn();
 
-    conn.query(`SELECT COUNT(*) duplicate FROM Users WHERE studentId=` + req.body.studentId + `;`
+    conn.query(`SELECT COUNT(*) duplicate FROM users WHERE studentId=` + req.body.studentId + `;`
         ,(err,rows,fields) => {
             conn.end();
             let d = rows[0].duplicate;  
@@ -28,7 +28,7 @@ const changeUsername = function(req, res, next) {
     console.log('- Changing Username...');
 
     let conn = newConn();
-    conn.query(`UPDATE Users
+    conn.query(`UPDATE users
         SET username="` + req.body.usr+ `"
         WHERE studentId="` + req.body.studentId + `";`
         ,(err,rows,fields) => {

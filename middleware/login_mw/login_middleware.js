@@ -4,7 +4,7 @@ const checkUser = function(req, res, next) {
     console.log('- Checking For User In Table...');
     let conn = newConn();
 
-    conn.query(`SELECT COUNT(*) duplicate FROM Users WHERE studentId=` + req.body.studentId + ` AND username="` + req.body.usr + `";`
+    conn.query(`SELECT COUNT(*) duplicate FROM users WHERE studentId=` + req.body.studentId + ` AND username="` + req.body.usr + `";`
         ,(err,rows,fields) => {
             conn.end();
             console.log(req.body.studentId);
