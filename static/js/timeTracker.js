@@ -76,6 +76,7 @@ function timerCycle() {
 function timeoutHandle(){
     //Logging timeout in console
     console.log('User timeout reached');
+    logGame('timed out');
     //Updates modal message
     $('#modalMsg').text('Session Timeout - 5 minutes of inactivity.');
     //Play loss sound

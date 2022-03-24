@@ -1,9 +1,0 @@
-add drop down or selection of all algs in header
-add home/ restart button somewhwere
-Format and displa better
-some way to track levels (Cookies)
-
-
-change how merge level is generated and (some how transfer values then do other bits)
-
-style needs changed but all is kinda temp

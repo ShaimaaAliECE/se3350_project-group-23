@@ -70,6 +70,7 @@ function getNextRow() {
   }
   //Level Complete
   else {
+    logGame('completed');
     $("#msg").text("Algorithm Complete!");
     playWinAudio();
     document.getElementById("nextLvl-btn").disabled = false;
@@ -125,6 +126,7 @@ function confirmQuit() {
   //creates a confirmation box
   let confirmAction = confirm("Are you sure you want to quit the game?"); //asks the user if they're sure they want to quit
   if (confirmAction) {
+    logGame('quit');
     //if they click the yes button this returns true and redirects them to the home page
     window.location = "/";
   } //if the user clicks cancel they get a message to continue the game

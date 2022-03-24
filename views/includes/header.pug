@@ -1,22 +1,26 @@
 header#header-contents
-    div.col-9.runner-left.title-text
+    div.col-5.runner-left.title-text
         a(href="/")
             i(class="fas fa-gamepad icon-link" style="padding-right: 15px;") 
-        span  Sorting Alg Game -  #{pageTitle} 
-            if algLvl
-                span Level #{algLvl}
-
-    //- div  
-            div Sorting Alg Game 
-            div= pageTitle 
+        div  
+            div Sorting Alg Game
+            div #{pageTitle} 
                 if algLvl
-                    span  Level #{algLvl}
+                    span Level #{algLvl}
 
-    div.col-3.runner-right
-        a(class='link-text' href='/' style="font-size: 25px;") 
+    div.col-2.runner-center
+        if usr 
+            span= usr
+        else 
+            span Guest
+        
+
+    div.col-5.runner-right
+        a(class='link-text' href='/')
             i.fas.fa-home
-        //div.line-seperator
-        //a(class='link-text' href='/info/about') About
-        //div.line-seperator
-        //a(class='link-text' href='/admin') Admin
-
+        div.line-seperator
+        a(class='link-text' href='/login') 
+            if usr
+                span Log Out
+            else 
+                span Login
