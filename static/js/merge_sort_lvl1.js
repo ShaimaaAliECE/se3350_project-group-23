@@ -164,6 +164,21 @@ function getPrevRow() {
     // If there is no current node, that means that we are on the last step, so just set it to the root node
     if (!curNode) curNode = splitTree.find(mergeOrder[mergeOrder.length - 1]);
 
+    // Gets the left and right nodes that we are merging from
+    let mergingFromLeft = curNode.left;
+    let mergingFromRight = curNode.right;
+
+    let leftEl, rightEl;
+
+    // Gets the elements of the numbers we are comparing
+    if (mergingFromLeft !== null) {
+      leftEl = $(`#arr-box-${mergingFromLeft.key}-${leftValsTaken}`);
+    }
+
+    if (mergingFromRight !== null) {
+      rightEl = $(`#arr-box-${mergingFromRight.key}-${rightValsTaken}`);
+    }
+
     // If we are going back to a previous row
     if (mergeSubStep < 0) {
       if (curNode.value.length !== 1) {
@@ -173,6 +188,20 @@ function getPrevRow() {
       }
       mergeStep--;
       curNode = splitTree.find(mergeOrder[mergeStep]);
+
+      if (rightEl) {
+        console.log(rightEl);
+        rightEl.css("background-color", "rgba(0, 0, 0, 0.1)");
+      }
+
+      if (leftEl) {
+        console.log(leftEl);
+        leftEl.css("background-color", "rgba(0, 0, 0, 0.1)");
+      }
+
+      // Gets left and right nodes we are merging from after switching the current node
+      mergingFromLeft = curNode.left;
+      mergingFromRight = curNode.right;
 
       // If no more merging steps left, set merging to false and get previous row
       if (mergeStep <= 0) {
@@ -185,6 +214,13 @@ function getPrevRow() {
         return getPrevRow();
       }
 
+      // Gets the elements of the numbers we are comparing
+      leftEl = $(`#arr-box-${mergingFromLeft.key}-${leftValsTaken}`);
+      rightEl = $(`#arr-box-${mergingFromRight.key}-${rightValsTaken}`);
+
+      leftValsTaken = curNode.left.value.length;
+      rightValsTaken = curNode.right.value.length;
+
       // The merge substep will be set to the length of the previous row's array
       mergeSubStep = curNode.value.length - 1;
     }
@@ -194,6 +230,26 @@ function getPrevRow() {
     addEmptySpaces(emptySlots);
 
     feedbackText(curNode.key, "Merging");
+
+    console.log(mergingFromRight.getSortedValue[rightValsTaken - 1]);
+    console.log(curNode.getSortedValue[mergeSubStep]);
+
+    if (
+      mergingFromRight.getSortedValue[rightValsTaken - 1] ===
+      curNode.getSortedValue[mergeSubStep]
+    ) {
+      console.log("Right was last");
+      rightEl.css("background-color", "rgba(0, 0, 0, 0.1)");
+      rightValsTaken--;
+      rightEl = $(`#arr-box-${mergingFromRight.key}-${rightValsTaken}`);
+      rightEl.css("background-color", "yellow");
+    } else {
+      console.log("Left was last");
+      leftEl.css("background-color", "rgba(0, 0, 0, 0.1)");
+      leftValsTaken--;
+      leftEl = $(`#arr-box-${mergingFromLeft.key}-${leftValsTaken}`);
+      leftEl.css("background-color", "yellow");
+    }
 
     if (curNode.key === 0) {
       document.getElementById("next-btn").disabled = false;
