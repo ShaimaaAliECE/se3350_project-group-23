@@ -2,6 +2,7 @@ extends index.pug
 block scripts 
     script(type="text/javascript" src="/js/BinaryTree.js")
     script(type="text/javascript" src="/js/mergeSort.js")
+    script(type="text/javascript" src="/js/logging.js") 
     case algLvl
         when "1"
             script(type="text/javascript" src="/js/merge_sort_lvl1.js")
@@ -57,7 +58,8 @@ block content
                                 i.fas.fa-arrow-right  
                         div.arr-row(style="width: 30%")
                         button.btn.btn-secondary#nextLvl-btn(onclick="nextLevel()")= "Next Level"      
-        when '3'
+
+        when "5"
             div#gameboard(style="width: 100%; display: flex; flex-direction: column")
                 div.arr-holder(style="order: -1") 
                     div.arr-row(style="width: 30%")
@@ -85,10 +87,12 @@ block content
                                 button.btn.btn-primary.modal-btn(onclick='window.location.href="/merge_sort"')
                                     div Change Level
                                     i.fas.fa-bars
+                                button.btn.btn-primary.modal-btn(onclick='window.location.href="/"')
+                                    div Switch to a New Algorithm
+                                    i.fas.fa-times
                                 button.btn.btn-danger.modal-btn(onclick='window.location.href="/"')
                                     div Quit
                                     i.fas.fa-times
-
                
         default
             div#gameboard(style="width: 100%; display: flex; flex-direction: column")
@@ -100,7 +104,7 @@ block content
                         b
                             div#msg
                     div.arr-row(style="width: 30%")
-                        button.btn.btn-secondary#nextLvl-btn(onclick="nextLevel()")= "Next Level" 
+                        button.btn.btn-secondary#nextLvl-btn(onclick="nextLevel("+algLvl+")")= "Next Level" 
                         button.btn.btn-secondary#mistake-count 
                             span Mistakes 
                             span#mistake-num 0
@@ -118,6 +122,9 @@ block content
                                 button.btn.btn-primary.modal-btn(onclick='window.location.href="/merge_sort"')
                                     div Change Level
                                     i.fas.fa-bars
+                                button.btn.btn-primary.modal-btn(onclick='window.location.href="/"')
+                                    div Switch to a New Algorithm
+                                    i.fas.fa-times
                                 button.btn.btn-danger.modal-btn(onclick='window.location.href="/"')
                                     div Quit
                                     i.fas.fa-times

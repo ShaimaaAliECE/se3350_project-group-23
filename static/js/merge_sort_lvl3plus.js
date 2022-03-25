@@ -9,6 +9,11 @@ let curNumIndex = 0;
 
 // On start button click, remove start btn and get the random array from the server, and call sorter fn
 $(() => {
+  if(window.location.pathname.split("/")[2] == 5) {
+    $("header").css("position", "fixed");
+    $(".default-page").css("margin-top", "var(--header-l-height)");
+  }
+
   $.post(`${window.location.href}/get_arr`, (res) => {
     // Sends array from server to the sorter fn
     sorter(res.arr);
@@ -70,6 +75,7 @@ function getNextRow() {
   }
   //Level Complete
   else {
+    logGame('completed');
     $("#msg").text("Algorithm Complete!");
     playWinAudio();
     document.getElementById("nextLvl-btn").disabled = false;
@@ -125,6 +131,7 @@ function confirmQuit() {
   //creates a confirmation box
   let confirmAction = confirm("Are you sure you want to quit the game?"); //asks the user if they're sure they want to quit
   if (confirmAction) {
+    logGame('quit');
     //if they click the yes button this returns true and redirects them to the home page
     window.location = "/";
   } //if the user clicks cancel they get a message to continue the game
@@ -136,14 +143,19 @@ function confirmQuit() {
 function fillGameBoard(startArray, maxDepth) {
   let rowSize = startArray.length * boxSize;
 
+  let extraHoldStyle = "";
+  if(window.location.pathname.split("/")[2] == 5) {
+    extraHoldStyle = "; justify-content: initial";
+  }
+
   let dom =
-    `<div class="arr-holder" id="dom-hold" style="order: 0"><div class="arr-row" id="arr-row-0">` +
+    `<div class="arr-holder" id="dom-hold" style="order: 0 ${extraHoldStyle}"><div class="arr-row" id="arr-row-0">` +
     formatRow(startArray, "0") +
     `</div></div>`;
   let split = ``;
   for (i = 1; i < maxDepth + 1; i++) {
     rowSize = Math.ceil(startArray.length / (i * 2)) * boxSize;
-    split += `<div class="arr-holder" id="arr-holder-${i}" style="order: ${i}">`;
+    split += `<div class="arr-holder" id="arr-holder-${i}" style="order: ${i} ${extraHoldStyle}">`;
 
     if (i < maxDepth) {
       for (j = 0; j < Math.pow(2, i); j++) {
@@ -187,4 +199,10 @@ function updateColour(val) {
 //Return home screen
 function returnHome() {
   window.location = "/";
+}
+
+function nextLevel(lvl) {
+  let nextlvl = lvl+1;
+  //redirecting user to the next level
+  window.location = "/merge_sort/"+nextlvl;
 }

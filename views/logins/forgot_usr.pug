@@ -1,0 +1,17 @@
+extends login_index.pug
+
+block content
+    form(class="login-form" method="POST" action="/login/set_new_username")
+        div.login-item
+            label(for="studentId") Student ID:
+            input(type="text" class="form-control login" id="studentId" name="studentId")
+        div.login-item
+            label(for="usr") New Username:
+            input(type="text" class="form-control login" id="usr" name="usr")
+        div.login-item
+            label(for="verify_usr") Verify New Username:
+            input(type="text" class="form-control login" id="verify_usr" name="verify_usr")
+        div.login-item
+            button(type="submit" class="btn btn-success") Update Username
+        div.login-item
+            a(class="form-text text-muted" href="/login" style="text-align:center") Return to Login ?
