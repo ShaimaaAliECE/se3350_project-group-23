@@ -1,10 +1,10 @@
-const express = require('express');
-var bodyParser = require('body-parser');
+const express = require("express");
+var bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const path = require('path'); //Used for directory path stuff
+const path = require("path"); //Used for directory path stuff
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: true})); 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Sets the view engine and view path
@@ -12,7 +12,7 @@ app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
 // Public client side static file
-app.use(express.static('static'));
+app.use(express.static("static"));
 
 // Routes
 var mergeSortRouter = require('./routes/mergesort_routes');
@@ -41,19 +41,19 @@ app.use('/', (req, res, next) => {
 });
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    res.status(err.status || 404).json({
-      message: "No such route exists"
-    })
+app.use(function (req, res, next) {
+  res.status(err.status || 404).json({
+    message: "No such route exists",
+  });
 });
-  
+
 // error handler
-app.use(function(err, req, res, next) {
-    console.log(err);
-    res.status(err.status || 500).json({
-        message: "Error Message"
-    })
+app.use(function (err, req, res, next) {
+  console.log(err);
+  res.status(err.status || 500).json({
+    message: "Error Message",
+  });
 });
 
 // Listens on port 80
-app.listen(80);
+app.listen(process.env.PORT || 80);
