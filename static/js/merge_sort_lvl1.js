@@ -107,7 +107,7 @@ function getNextRow() {
 
     //During merge, if node key is 0 (mergeSort is done)
     if (mergeStep >= mergeOrder.length) {
-      logGame('completed');
+      logGame("completed");
       //Disable the next button
       feedbackText(curNode.key, "Algorithm Complete");
       document.getElementById("next-btn").disabled = true;
@@ -282,7 +282,7 @@ function confirmQuit() {
   //creates a confirmation box
   let confirmAction = confirm("Are you sure you want to quit the game?"); //asks the user if they're sure they want to quit
   if (confirmAction) {
-    logGame('quit');
+    logGame("quit");
     //if they click the yes button this returns true and redirects them to the home page
     window.location = "/";
   } //if the user clicks cancel they get a message to continue the game
@@ -369,7 +369,7 @@ function updateColour(val) {
   //timer set to keep element green for 1sec
   setTimeout(() => {
     el.css("background-color", "");
-  }, 1000);
+  }, 100);
 }
 
 function nextLevel() {
