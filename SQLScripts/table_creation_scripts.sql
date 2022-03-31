@@ -20,5 +20,5 @@ CREATE TABLE users(
 	studentId INT NOT NULL PRIMARY KEY,
     username varchar(45)
 );
-    
+
 

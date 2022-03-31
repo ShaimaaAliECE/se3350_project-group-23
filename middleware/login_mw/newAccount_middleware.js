@@ -75,7 +75,7 @@ const checkDuplicateUsername = function(req, res, next) {
     console.log('- Checking For Duplicate User In Table...');
     let conn = newConn();
 
-    conn.query(`SELECT COUNT(*) duplicate FROM Users WHERE username="` + req.body.usr + `";`
+    conn.query(`SELECT COUNT(*) duplicate FROM users WHERE username="` + req.body.usr + `";`
         ,(err,rows,fields) => {
             conn.end();
             let d = rows[0].duplicate;  
